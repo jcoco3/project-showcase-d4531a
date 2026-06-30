@@ -304,7 +304,7 @@
   .seqctrl button:hover{background:color-mix(in srgb,var(--cat,var(--cyan)) 18%,transparent)}
 
   @media(max-width:1000px){.grid.std{grid-template-columns:repeat(2,1fr)}.grid.mini{grid-template-columns:repeat(2,1fr)}.grid.feat{grid-template-columns:1fr}}
-  @media(max-width:620px){.grid.std,.grid.mini{grid-template-columns:1fr}body{padding:12px}.bezel{padding:30px 18px 40px}}
+  @media(max-width:620px){.grid.std,.grid.mini{grid-template-columns:1fr}body{padding:12px}.bezel{padding:48px 22px 40px}}
 
   /* ---- Completionist celebration modal ---- */
   .celeb-backdrop{
@@ -385,7 +385,8 @@
   }
   /* Mobile: shrink the celebration box so the light-cycle arena has room to run
      around it (the modal is a wall; markWalls recomputes to this smaller size). */
-  @media(max-width:620px){
+  /* phones in EITHER orientation (narrow OR short) get the compact box + tidy footer */
+  @media(max-width:620px),(max-height:600px){
     .celeb-backdrop{padding:12px 8px}
     .celeb-modal{max-width:165px;padding:11px 11px 13px;border-radius:11px}
     .celeb-modal .m-close{width:21px;height:21px;font-size:12px;top:5px;right:6px}
@@ -394,6 +395,8 @@
     .celeb-modal .celeb-body{font-size:8.5px;line-height:1.4;max-width:140px;margin:0 auto 9px}
     .celeb-modal .report-link{font-size:9.5px;padding:4px 9px;margin-top:6px;gap:4px}
     .celeb-credit{font-size:8px;margin-top:5px}
+    footer{flex-direction:column;align-items:flex-start;gap:10px}
+    .fb-footer-widget{align-items:flex-start}
   }
 
   /* ---- TRON light-cycle canvas (celebration backdrop, sits at z-index:0 behind modal) ---- */
