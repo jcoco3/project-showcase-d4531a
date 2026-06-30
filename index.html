@@ -308,7 +308,9 @@
     position:fixed;inset:0;z-index:55;display:none;
     align-items:center;justify-content:center;
     padding:40px 20px;overflow:hidden;
-    background:rgba(0,0,0,.88);backdrop-filter:blur(7px);
+    /* lighter overlay so the bright warp starfield shows through during the celebration;
+       blur smears the page content behind into an indistinct dark wash for focus */
+    background:rgba(0,0,0,.55);backdrop-filter:blur(6px);
   }
   .celeb-backdrop.open{display:flex;animation:fadeIn .22s ease}
   .celeb-modal{
