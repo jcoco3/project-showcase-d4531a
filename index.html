@@ -1231,6 +1231,7 @@ document.addEventListener('keydown',e=>{
   var LS_CELEB  = 'ps_celebrated';
   var viewedSet = new Set(JSON.parse(localStorage.getItem(LS_VIEWED) || '[]'));
   var pendingCeleb = false;
+  var firedThisSession = false;   // fires once per page load on completion; re-fires after a reload
 
   // Wrap openModal to record each project viewed
   var _origOpen = openModal;
@@ -1245,7 +1246,7 @@ document.addEventListener('keydown',e=>{
     // CURRENT projects so a stale/removed-card entry can't block or skew it.
     var seen = 0;
     for(var pi = 0; pi < PROJECTS.length; pi++){ if(viewedSet.has(PROJECTS[pi].name)) seen++; }
-    if(seen >= PROJECTS.length && !localStorage.getItem(LS_CELEB)){
+    if(seen >= PROJECTS.length && !firedThisSession){
       pendingCeleb = true;
     }
   };
@@ -1268,7 +1269,7 @@ document.addEventListener('keydown',e=>{
   celebAudio.loop = true;
 
   function openCelebration(preview){
-    if(!preview){ try{ localStorage.setItem(LS_CELEB, '1'); }catch(e){} }
+    if(!preview){ firedThisSession = true; }   // don't re-fire this session; resets on reload
     celebCountEl.textContent = PROJECTS.length;
     spawnParticles();
     celebBackdrop.classList.add('open');
@@ -1376,6 +1377,7 @@ document.addEventListener('keydown',e=>{
     localStorage.removeItem(LS_CELEB);
     viewedSet.clear();
     pendingCeleb = false;
+    firedThisSession = false;
     console.log('[showcase] Completionist progress reset. Reload the page to start fresh.');
   };
 })();
