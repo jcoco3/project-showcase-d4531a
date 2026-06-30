@@ -1293,6 +1293,49 @@ document.addEventListener('keydown',e=>{
     }
   });
 
+  // Discreet long-press on the footer = mobile equivalent of Ctrl+Alt+W:
+  // ~650ms press with minimal movement previews the celebration (no LS flag set).
+  (function(){
+    var footer = document.querySelector('footer');
+    if(!footer) return;
+    var LP_MS = 650, MOVE_TOL = 12;
+    var timer = null, sx = 0, sy = 0;
+
+    function onFeature(node){
+      // Don't hijack a press that begins on the Feedback button or a link.
+      return node && node.closest && node.closest('button, a, input, textarea, select');
+    }
+    function cancel(){ if(timer){ clearTimeout(timer); timer = null; } }
+    function begin(x, y, target){
+      if(onFeature(target)) return;            // let the real control handle it
+      cancel();
+      sx = x; sy = y;
+      timer = setTimeout(function(){
+        timer = null;
+        if(!celebBackdrop.classList.contains('open')) openCelebration(true);
+      }, LP_MS);
+    }
+    function moved(x, y){
+      if(timer && (Math.abs(x - sx) > MOVE_TOL || Math.abs(y - sy) > MOVE_TOL)) cancel();
+    }
+
+    // Touch (primary)
+    footer.addEventListener('touchstart', function(e){
+      if(e.touches && e.touches.length === 1) begin(e.touches[0].clientX, e.touches[0].clientY, e.target);
+    }, {passive:true});
+    footer.addEventListener('touchmove', function(e){
+      if(e.touches && e.touches.length) moved(e.touches[0].clientX, e.touches[0].clientY);
+    }, {passive:true});
+    footer.addEventListener('touchend', cancel);
+    footer.addEventListener('touchcancel', cancel);
+
+    // Mouse long-press (also supported)
+    footer.addEventListener('mousedown', function(e){ if(e.button === 0) begin(e.clientX, e.clientY, e.target); });
+    footer.addEventListener('mousemove', function(e){ moved(e.clientX, e.clientY); });
+    footer.addEventListener('mouseup', cancel);
+    footer.addEventListener('mouseleave', cancel);
+  })();
+
   // Dev helper: open browser console and call __resetCompletionist() to test
   window.__resetCompletionist = function(){
     localStorage.removeItem(LS_VIEWED);
@@ -1339,6 +1382,12 @@ document.addEventListener('keydown',e=>{
   var paused = false;           // milestone overlay freezes the sim
   var milestoneEl = null;       // win/lose overlay DOM element
   var wallCells = [];           // grid keys occupied by the modal box (permanent walls)
+  var hintEl = null;            // attract-mode "swipe/press to drive" hint
+  // Touch / swipe steering
+  var SWIPE_THRESH = 24;        // min px on dominant axis to count as a swipe (vs a tap)
+  var touchStartX = 0, touchStartY = 0, touchTracking = false;
+  var IS_TOUCH = ('ontouchstart' in window) ||
+                 (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
   // Same endpoint constant the feedback survey uses (separate IIFE scope)
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4hiSjIGivNSqggeaqNCS5d4xCd2zvYdzJPl_xvToLP8wEiyULa7-eEM7r2caJj653yA/exec';
 
@@ -1599,6 +1648,7 @@ document.addEventListener('keydown',e=>{
     backdrop.appendChild(hud);
   }
   function updateHud(){
+    updateHint();
     if(!hud) return;
     hud.style.display = playerActive ? 'block' : 'none';
     hud.textContent = 'Wins: ' + wins + ' · Losses: ' + losses;
@@ -1743,6 +1793,55 @@ document.addEventListener('keydown',e=>{
     else if(k === 'ArrowRight' || k === 'd' || k === 'D'){ setPlayerDir(1, 0); e.preventDefault(); }
   }
 
+  // ---- Touch / swipe steering (mirrors the keyboard takeover path) ----
+  function onTouchStart(e){
+    if(!running || paused) return;
+    if(!e.touches || !e.touches.length) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchTracking = true;
+  }
+  function onTouchMove(e){
+    if(!running || paused) return;
+    // Suppress page scroll / pull-to-refresh while driving (only over the celebration).
+    e.preventDefault();
+  }
+  function onTouchEnd(e){
+    if(!running || paused || !touchTracking) return;
+    touchTracking = false;
+    var t = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0] : null;
+    if(!t) return;
+    var dx = t.clientX - touchStartX;
+    var dy = t.clientY - touchStartY;
+    var ax = Math.abs(dx), ay = Math.abs(dy);
+    // Tap (below threshold on both axes) → ignore, only real swipes steer.
+    if(ax < SWIPE_THRESH && ay < SWIPE_THRESH) return;
+    if(ax >= ay) setPlayerDir(dx < 0 ? -1 : 1, 0);   // horizontal swipe
+    else         setPlayerDir(0, dy < 0 ? -1 : 1);   // vertical swipe
+  }
+
+  // ---- Attract-mode hint ("swipe to drive" / "press an arrow") ----
+  function ensureHint(){
+    if(hintEl) return;
+    var backdrop = document.getElementById('celeb-backdrop');
+    if(!backdrop) return;
+    hintEl = document.createElement('div');
+    hintEl.id = 'celeb-tron-hint';
+    hintEl.style.cssText =
+      'position:absolute;top:54px;left:18px;z-index:2;pointer-events:none;' +
+      'font:600 10.5px/1.3 "Segoe UI",sans-serif;letter-spacing:.12em;' +
+      'text-transform:uppercase;color:#3ff0ff;opacity:.7;display:none;' +
+      'padding:4px 10px;border:1px solid rgba(63,240,255,.32);border-radius:7px;' +
+      'background:rgba(0,8,12,.5);text-shadow:0 0 6px rgba(63,240,255,.6)';
+    hintEl.textContent = IS_TOUCH ? 'Swipe to drive' : 'Press an arrow key to drive';
+    backdrop.appendChild(hintEl);
+  }
+  function updateHint(){
+    if(!hintEl) return;
+    // Visible only in attract mode (before takeover) while the sim runs.
+    hintEl.style.display = (running && !playerActive && !paused) ? 'block' : 'none';
+  }
+
   function resize(){
     DPR = Math.min(window.devicePixelRatio || 1, 2);
     var w = canvas.offsetWidth  || 0;
@@ -1782,13 +1881,22 @@ document.addEventListener('keydown',e=>{
     if(running) stop();
     loadScore();
     ensureHud();
+    ensureHint();
     hideMilestone();
-    initRound();
     running  = true;
+    initRound();
     lastTime = performance.now();
     rafId    = requestAnimationFrame(loop);
     window.addEventListener('resize', resize);
     window.addEventListener('keydown', onKey);
+    // Touch swipe steering — attached to the celebration overlay only, so normal
+    // page scrolling is untouched when the celebration is closed.
+    var bd = document.getElementById('celeb-backdrop');
+    if(bd){
+      bd.addEventListener('touchstart', onTouchStart, {passive:false});
+      bd.addEventListener('touchmove',  onTouchMove,  {passive:false});
+      bd.addEventListener('touchend',   onTouchEnd,   {passive:false});
+    }
     // Modal pops in over ~0.42s; recompute walls once it has settled at full size.
     setTimeout(function(){ if(running) markWalls(); }, 500);
   }
@@ -1798,12 +1906,20 @@ document.addEventListener('keydown',e=>{
     if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
     grid = {}; wallCells = []; cycles = []; explodeGroups = [];
     playerActive = false; playerNextDir = null; paused = false;
+    touchTracking = false;
     hideMilestone();
     if(hud) hud.style.display = 'none';
+    if(hintEl) hintEl.style.display = 'none';
     var w = canvas.offsetWidth || 0, h = canvas.offsetHeight || 0;
     if(w && h) ctx.clearRect(0, 0, w, h);
     window.removeEventListener('resize', resize);
     window.removeEventListener('keydown', onKey);   // keys do nothing when closed
+    var bd = document.getElementById('celeb-backdrop');
+    if(bd){
+      bd.removeEventListener('touchstart', onTouchStart, {passive:false});
+      bd.removeEventListener('touchmove',  onTouchMove,  {passive:false});
+      bd.removeEventListener('touchend',   onTouchEnd,   {passive:false});
+    }
   }
 
   window.__celebTron = {start:start, stop:stop};
