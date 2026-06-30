@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Project Showcase — Jonathan</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
@@ -1302,11 +1305,11 @@ document.addEventListener('keydown',e=>{
   });
 
   // Discreet long-press on the footer = mobile equivalent of Ctrl+Alt+W:
-  // ~650ms press with minimal movement previews the celebration (no LS flag set).
+  // ~5s press with minimal movement previews the celebration (no LS flag set).
   (function(){
     var footer = document.querySelector('footer');
     if(!footer) return;
-    var LP_MS = 650, MOVE_TOL = 12;
+    var LP_MS = 5000, MOVE_TOL = 24;
     var timer = null, sx = 0, sy = 0;
 
     function onFeature(node){
