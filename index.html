@@ -1443,11 +1443,12 @@ document.addEventListener('keydown',e=>{
     if(!modal || !cv.width) return;
     var r = modal.getBoundingClientRect();
     if(!r.width || !r.height) return;
-    var pad = 0; // wall matches the box footprint (no extra margin)
-    var c0 = Math.floor((r.left   - cv.left - pad) / CELL);
-    var c1 = Math.ceil ((r.right  - cv.left + pad) / CELL);
-    var r0 = Math.floor((r.top    - cv.top  - pad) / CELL);
-    var r1 = Math.ceil ((r.bottom - cv.top  + pad) / CELL);
+    // Wall only the cells FULLY inside the box (round inward) so cycles can ride
+    // right up to the visible edge before crashing — no phantom buffer around it.
+    var c0 = Math.ceil ((r.left   - cv.left) / CELL);
+    var c1 = Math.floor((r.right  - cv.left) / CELL);
+    var r0 = Math.ceil ((r.top    - cv.top ) / CELL);
+    var r1 = Math.floor((r.bottom - cv.top ) / CELL);
     for(var cx = c0; cx < c1; cx++){
       for(var cy = r0; cy < r1; cy++){
         if(cx < 0 || cy < 0 || cx >= COLS || cy >= ROWS) continue;
