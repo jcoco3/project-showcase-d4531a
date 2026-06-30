@@ -1379,7 +1379,7 @@ document.addEventListener('keydown',e=>{
     if(!modal || !cv.width) return;
     var r = modal.getBoundingClientRect();
     if(!r.width || !r.height) return;
-    var pad = CELL; // slight padding around the box
+    var pad = 0; // wall matches the box footprint (no extra margin)
     var c0 = Math.floor((r.left   - cv.left - pad) / CELL);
     var c1 = Math.ceil ((r.right  - cv.left + pad) / CELL);
     var r0 = Math.floor((r.top    - cv.top  - pad) / CELL);
@@ -1537,15 +1537,10 @@ document.addEventListener('keydown',e=>{
       // circle behind the bright one fakes the glow cheaply).
       if(c.alive){
         var hx = (c.x + 0.5) * CELL, hy = (c.y + 0.5) * CELL;
-        var isPlayer = playerActive && i === PLAYER_IDX;
-        // soft glow halo — the player's cycle glows BRIGHTER (same size dot as the AI)
-        ctx.fillStyle = 'rgba('+cs+',' + (isPlayer ? 0.45 : 0.22) + ')';
+        // soft glow halo — same for every cycle (player not distinguished)
+        ctx.fillStyle = 'rgba('+cs+',0.22)';
         ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.45, 0, 6.283); ctx.fill();
-        if(isPlayer){                            // extra inner glow for the player (brightness only)
-          ctx.fillStyle = 'rgba('+cs+',0.38)';
-          ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.33, 0, 6.283); ctx.fill();
-        }
-        ctx.fillStyle = 'rgba('+cs+',1)';        // crisp core dot (same 0.28x for everyone)
+        ctx.fillStyle = 'rgba('+cs+',1)';        // crisp core dot
         ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.28, 0, 6.283); ctx.fill();
       }
     }
