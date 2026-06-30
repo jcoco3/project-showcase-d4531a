@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Showcase — Jonathan</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<style>
+  :root{
+    --bg:#000000;
+    --bg2:#070708;
+    --cyan:#3ff0ff;
+    --cyan-dim:#1b6f7a;
+    --orange:#ff8a3c;
+    --amber:#ffc24b;
+    --green:#5dffb0;
+    --violet:#b794ff;
+    --txt:#dfeaf2;
+    --txt-dim:#8aa0b0;
+    --line:rgba(63,240,255,.22);
+    --card:rgba(8,9,11,.78);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* subtle flying-through-stars backdrop */
+  #starfield{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:0; pointer-events:none; opacity:.5;
+  }
+  @media (prefers-reduced-motion:reduce){ #starfield{display:none} }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",-apple-system,Roboto,Helvetica,sans-serif;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(63,240,255,.05), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgba(255,138,60,.04), transparent 55%),
+      var(--bg);
+    color:var(--txt);
+    line-height:1.5;
+    min-height:100vh;
+    padding:26px;
+  }
+  /* curved bezel frame */
+  .bezel{
+    position:relative;
+    z-index:1;
+    border:1px solid rgba(220,245,255,.55);
+    border-radius:28px;
+    padding:42px 40px 60px;
+    background:linear-gradient(180deg, rgba(10,10,12,.6), rgba(0,0,0,.9));
+    box-shadow:
+      0 0 0 1px rgba(63,240,255,.12) inset,
+      0 0 34px rgba(63,240,255,.10),
+      0 0 80px rgba(0,0,0,.6);
+    max-width:1320px;
+    margin:0 auto;
+    overflow:hidden;
+  }
+  .bezel::before{
+    content:"";position:absolute;inset:6px;border-radius:22px;
+    border:1px solid var(--line);pointer-events:none;
+  }
+  .corner{position:absolute;width:26px;height:26px;border:2px solid var(--cyan);opacity:.7}
+  .corner.tl{top:14px;left:14px;border-right:0;border-bottom:0;border-radius:14px 0 0 0}
+  .corner.tr{top:14px;right:14px;border-left:0;border-bottom:0;border-radius:0 14px 0 0}
+  .corner.bl{bottom:14px;left:14px;border-right:0;border-top:0;border-radius:0 0 0 14px}
+  .corner.br{bottom:14px;right:14px;border-left:0;border-top:0;border-radius:0 0 14px 0}
+
+  header{position:relative;z-index:2;margin-bottom:8px}
+  .eyebrow{
+    font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--cyan);opacity:.85;margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(30px,5vw,52px);font-weight:700;letter-spacing:.01em;
+    background:linear-gradient(90deg,#fff,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(63,240,255,.25);
+  }
+  .sub{color:var(--txt-dim);max-width:760px;margin-top:12px;font-size:15px}
+  .meta-row{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px;font-size:13px;color:var(--txt-dim)}
+  .meta-row b{color:var(--cyan);font-size:22px;font-weight:600;display:block;letter-spacing:.02em}
+  .rule{height:1px;background:linear-gradient(90deg,var(--cyan),transparent);margin:26px 0 6px;opacity:.5}
+
+  /* filters */
+  .filters{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 4px;position:relative;z-index:2}
+  .chip-btn{
+    border:1px solid var(--line);background:rgba(63,240,255,.04);
+    color:var(--txt-dim);padding:6px 14px;border-radius:20px;font-size:12.5px;
+    cursor:pointer;letter-spacing:.04em;transition:.18s;user-select:none;
+  }
+  .chip-btn:hover{color:var(--cat,var(--cyan));border-color:var(--cat,var(--cyan-dim))}
+  .chip-btn.active{color:var(--cat,var(--cyan));border-color:var(--cat,var(--cyan));background:color-mix(in srgb, var(--cat,var(--cyan)) 14%, transparent);box-shadow:0 0 14px color-mix(in srgb, var(--cat,var(--cyan)) 40%, transparent)}
+  .chip-btn[data-f="QGIS Plugin"]{--cat:#3dff85}
+  .chip-btn[data-f="Geospatial/LiDAR"]{--cat:#ff5a5a}
+  .chip-btn[data-f="Voice/AI"]{--cat:#b794ff}
+  .chip-btn[data-f="Drone"]{--cat:#4d9dff}
+  .chip-btn[data-f="Utility"]{--cat:#ff8a3c}
+  .chip-btn[data-f="Other"]{--cat:#9aa6b2}
+
+  .section-label{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--txt-dim);margin:34px 2px 14px}
+  .section-label span{color:var(--orange)}
+
+  .grid{display:grid;gap:18px;position:relative;z-index:2}
+  .grid.feat{grid-template-columns:repeat(2,1fr)}
+  .grid.std{grid-template-columns:repeat(3,1fr)}
+  .grid.mini{grid-template-columns:repeat(4,1fr)}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 18px 16px;position:relative;overflow:hidden;cursor:pointer;
+    transition:.2s;display:flex;flex-direction:column;
+    backdrop-filter:blur(2px);
+  }
+  .card::after{
+    content:"";position:absolute;left:0;top:0;height:100%;width:8px;
+    background:linear-gradient(180deg,var(--cat,var(--cyan)),transparent);opacity:.8;
+    box-shadow:2px 0 14px -2px var(--cat,var(--cyan));
+  }
+  .card:hover{border-color:var(--cat,var(--cyan));box-shadow:0 0 22px rgba(63,240,255,.16);transform:translateY(-3px)}
+
+  /* per-category accent colors (band + filter chips share these) */
+  .card[data-cat="QGIS Plugin"]{--cat:#3dff85}
+  .card[data-cat="Geospatial/LiDAR"]{--cat:#ff5a5a}
+  .card[data-cat="Voice/AI"]{--cat:#b794ff}
+  .card[data-cat="Drone"]{--cat:#4d9dff}
+  .card[data-cat="Utility"]{--cat:#ff8a3c}
+  .card[data-cat="Other"]{--cat:#9aa6b2}
+
+  .shot{
+    width:calc(100% + 36px);margin:-18px -18px 14px;height:170px;object-fit:cover;
+    border-bottom:1px solid var(--line);background:#020509;
+    filter:saturate(1.05) contrast(1.02);
+  }
+  .feat .shot{height:230px}
+  /* tall phone screenshots: show full portrait aspect, letterboxed, not cropped */
+  .shot.portrait{object-fit:contain;background:#000;height:300px}
+  .feat .shot.portrait{height:340px}
+  /* video clips: always show the full frame, never crop */
+  video.shot{object-fit:contain;background:#000;height:200px}
+  .feat video.shot{height:260px}
+  /* svg infographics: show whole diagram, never crop */
+  img.shot[src$=".svg"]{object-fit:contain;background:#04070d;height:230px}
+  .feat img.shot[src$=".svg"]{height:300px}
+
+  .card h3{font-size:18px;font-weight:650;letter-spacing:.01em;color:#fff;margin-bottom:3px;padding-right:70px}
+  .feat .card h3,.card.feat h3{font-size:22px}
+  .tagline{font-size:13px;color:var(--txt-dim);margin-bottom:12px}
+
+  ul{list-style:none;margin:2px 0 14px}
+  li{font-size:12.8px;color:var(--txt);padding:3px 0 3px 16px;position:relative}
+  li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border:1px solid var(--cyan);transform:rotate(45deg);opacity:.8}
+
+  .foot{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .tech{font-size:10.5px;color:var(--cyan);background:rgba(63,240,255,.07);border:1px solid var(--line);padding:2px 8px;border-radius:11px;letter-spacing:.02em}
+
+  .status{position:absolute;top:14px;right:14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid;z-index:3}
+  .feat .status{top:18px;right:18px}
+  .s-Active{color:var(--cyan);border-color:var(--cyan);background:rgba(63,240,255,.1)}
+  .s-Mature{color:var(--green);border-color:var(--green);background:rgba(93,255,176,.08)}
+  .s-Beta{color:var(--amber);border-color:var(--amber);background:rgba(255,194,75,.08)}
+  .s-WIP{color:var(--orange);border-color:var(--orange);background:rgba(255,138,60,.08)}
+  .s-Experimental{color:var(--violet);border-color:var(--violet);background:rgba(183,148,255,.08)}
+
+  .effort{display:flex;gap:3px;align-items:center;margin-left:auto}
+  .effort i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .effort i.on{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+
+  footer{position:relative;z-index:2;margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:var(--txt-dim);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  .hidden{display:none!important}
+
+  /* ---- audio guidance toggle ---- */
+  .audio-row{display:flex;align-items:center;gap:10px;margin:16px 0 0;position:relative;z-index:2}
+  .audio-toggle{
+    display:inline-flex;align-items:center;gap:7px;
+    border:1px solid var(--cyan-dim);background:rgba(63,240,255,.04);
+    color:var(--txt-dim);padding:6px 16px;border-radius:20px;font-size:12.5px;
+    cursor:pointer;letter-spacing:.04em;transition:.2s;user-select:none;
+    font-family:inherit;
+  }
+  .audio-toggle:hover{color:var(--cyan);border-color:var(--cyan);background:rgba(63,240,255,.08)}
+  .audio-toggle.audio-on{
+    color:var(--cyan);border-color:var(--cyan);
+    background:rgba(63,240,255,.12);
+    box-shadow:0 0 16px rgba(63,240,255,.25);
+  }
+  .audio-hint{font-size:11.5px;color:var(--txt-dim);opacity:.65;letter-spacing:.02em}
+  /* playing pulse on a card */
+  .card.audio-playing{border-color:var(--cyan);box-shadow:0 0 20px rgba(63,240,255,.22)}
+
+  /* report link button (cards + modal) */
+  .report-link{
+    display:inline-flex;align-items:center;gap:6px;margin-top:12px;align-self:flex-start;
+    font-size:12.5px;color:var(--cat,var(--cyan));text-decoration:none;cursor:pointer;
+    border:1px solid var(--cat,var(--cyan));border-radius:9px;padding:6px 12px;transition:.16s;
+    background:color-mix(in srgb, var(--cat,var(--cyan)) 8%, transparent);
+  }
+  .report-link:hover{background:color-mix(in srgb, var(--cat,var(--cyan)) 22%, transparent)}
+  .modal-report{margin-top:18px}
+
+  /* attention-drawing "Tron cycle" chasing ring on report buttons */
+  @property --ring-angle{ syntax:'<angle>'; initial-value:0deg; inherits:false; }
+  .report-link{ position:relative; }
+  .report-link::before{
+    content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.6px;pointer-events:none;
+    background:conic-gradient(from var(--ring-angle),
+      transparent 0deg, transparent 275deg,
+      var(--cat,var(--cyan)) 315deg, #eafdff 348deg, var(--cat,var(--cyan)) 360deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    animation:report-ring-chase 2.6s linear infinite;
+  }
+  @keyframes report-ring-chase{ to{ --ring-angle:360deg } }
+  /* fallback: if conic-gradient/@property unsupported, gently pulse instead */
+  @supports not (background:conic-gradient(from 0deg, red, blue)){
+    .report-link::before{ display:none }
+    .report-link{ animation:report-pulse 1.9s ease-in-out infinite }
+    @keyframes report-pulse{ 0%,100%{ box-shadow:0 0 0 0 transparent } 50%{ box-shadow:0 0 15px 1px var(--cat,var(--cyan)) } }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .report-link::before{ animation:none }
+    .report-link{ animation:none }
+  }
+
+  /* zoom lightbox (over the modal) */
+  .zoom-backdrop{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.93);backdrop-filter:blur(3px)}
+  .zoom-backdrop.open{display:flex;animation:fadeIn .15s ease}
+  #zoom-img{max-width:92vw;max-height:88vh;border-radius:10px;border:1px solid var(--cat,var(--cyan));
+    box-shadow:0 0 46px rgba(0,0,0,.8);object-fit:contain}
+  .z-btn{position:absolute;cursor:pointer;border-radius:10px;transition:.16s;line-height:1;
+    background:rgba(10,14,20,.72);border:1px solid var(--cat,var(--cyan));color:var(--cat,var(--cyan))}
+  .z-btn:hover{background:color-mix(in srgb, var(--cat,var(--cyan)) 22%, transparent)}
+  .z-close{top:18px;right:20px;width:44px;height:44px;font-size:24px;border-radius:50%}
+  .z-prev,.z-next{top:50%;transform:translateY(-50%);width:52px;height:66px;font-size:30px}
+  .z-prev{left:24px}.z-next{right:24px}
+  .z-count{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--txt-dim);font-size:13px;letter-spacing:.12em}
+  @media(max-width:620px){.z-prev{left:6px}.z-next{right:6px}.z-prev,.z-next{width:40px;height:56px;font-size:24px}}
+
+  /* ---- detail modal / lightbox ---- */
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:50;display:none;
+    align-items:center;justify-content:center;
+    padding:40px 20px;overflow-y:auto;
+    background:rgba(0,0,0,.8);backdrop-filter:blur(5px);
+  }
+  .modal-backdrop.open{display:flex;animation:fadeIn .18s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal{
+    position:relative;width:100%;max-width:920px;
+    background:linear-gradient(180deg,rgba(12,13,16,.97),rgba(0,0,0,.98));
+    border:1px solid var(--line);border-left:8px solid var(--cat,var(--cyan));
+    border-radius:18px;padding:30px 34px 34px;
+    box-shadow:0 0 60px rgba(0,0,0,.75),0 0 36px color-mix(in srgb,var(--cat,var(--cyan)) 28%,transparent);
+    animation:popIn .2s ease;margin:auto;
+  }
+  /* keep the status pill inline inside the modal (global .status is absolute) */
+  .modal .status{position:static;display:inline-block;top:auto;right:auto}
+  @keyframes popIn{from{transform:translateY(14px) scale(.985);opacity:0}to{transform:none;opacity:1}}
+  .modal .m-close{
+    position:absolute;top:16px;right:18px;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt-dim);
+    font-size:20px;line-height:1;cursor:pointer;transition:.18s;
+  }
+  .modal .m-close:hover{color:var(--cat,var(--cyan));border-color:var(--cat,var(--cyan))}
+  .modal .m-eyebrow{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--cat,var(--cyan));margin-bottom:6px}
+  .modal h2{font-size:clamp(22px,3.4vw,30px);font-weight:700;color:#fff;letter-spacing:.01em;padding-right:40px}
+  .modal .m-tagline{color:var(--txt-dim);font-size:14.5px;margin-top:8px;max-width:680px}
+  .modal .m-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+  .modal ul{margin:18px 0 6px}
+  .modal li{font-size:13.5px;padding:5px 0 5px 18px}
+  .modal .m-foot{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .mosaic{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px}
+  .mosaic img,.mosaic video{width:100%;height:200px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#020509;display:block}
+  .mosaic img[data-zi]{cursor:zoom-in;transition:.15s}
+  .mosaic img[data-zi]:hover{border-color:var(--cat,var(--cyan));filter:brightness(1.08)}
+  .mosaic img:first-child:nth-last-child(1),.mosaic video:first-child:nth-last-child(1){grid-column:1/-1;height:300px}
+  .mosaic img.portrait,.mosaic video.portrait{object-fit:contain;background:#000;height:360px}
+  /* videos span the whole mosaic width so they're not cramped in one column */
+  .mosaic video{grid-column:1/-1;width:100%;height:auto;max-height:60vh;object-fit:contain;background:#000}
+  .mosaic img[src$=".svg"]{object-fit:contain;background:#04070d}
+  .mosaic .noshot{
+    grid-column:1/-1;padding:26px;text-align:center;border:1px dashed var(--line);
+    border-radius:10px;color:var(--txt-dim);font-size:13px;
+  }
+  /* sequence/slideshow: one box cycling through frames in order */
+  .seqbox{margin-top:22px;background:#04070d;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .seqbox img{max-width:100%;max-height:460px;border-radius:8px;object-fit:contain;display:inline-block}
+  .seqdots{display:flex;gap:7px;justify-content:center;margin-top:12px}
+  .seqdots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);transition:.2s}
+  .seqdots i.on{background:var(--cat,var(--cyan));box-shadow:0 0 7px var(--cat,var(--cyan))}
+  .seqcap{margin-top:8px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-dim)}
+  .seqctrl{display:flex;gap:10px;justify-content:center;margin-top:12px}
+  .seqctrl button{
+    width:40px;height:34px;border-radius:9px;cursor:pointer;
+    border:1px solid var(--cat,var(--cyan));background:rgba(63,240,255,.06);
+    color:var(--cat,var(--cyan));font-size:16px;line-height:1;transition:.16s;
+  }
+  .seqctrl button:hover{background:color-mix(in srgb,var(--cat,var(--cyan)) 18%,transparent)}
+
+  @media(max-width:1000px){.grid.std{grid-template-columns:repeat(2,1fr)}.grid.mini{grid-template-columns:repeat(2,1fr)}.grid.feat{grid-template-columns:1fr}}
+  @media(max-width:620px){.grid.std,.grid.mini{grid-template-columns:1fr}body{padding:12px}.bezel{padding:30px 18px 40px}}
+
+  /* ---- Completionist celebration modal ---- */
+  .celeb-backdrop{
+    position:fixed;inset:0;z-index:55;display:none;
+    align-items:center;justify-content:center;
+    padding:40px 20px;overflow:hidden;
+    background:rgba(0,0,0,.88);backdrop-filter:blur(7px);
+  }
+  .celeb-backdrop.open{display:flex;animation:fadeIn .22s ease}
+  .celeb-modal{
+    position:relative;width:100%;max-width:680px;
+    background:linear-gradient(160deg,rgba(4,8,14,.98),rgba(0,0,0,.99));
+    border:2px solid rgba(63,240,255,.65);border-radius:24px;
+    padding:56px 50px 48px;margin:auto;text-align:center;overflow:hidden;
+    box-shadow:
+      0 0 0 1px rgba(63,240,255,.12) inset,
+      0 0 0 5px rgba(63,240,255,.05) inset,
+      0 0 90px rgba(63,240,255,.4),
+      0 0 200px rgba(63,240,255,.14),
+      0 0 300px rgba(0,0,0,.95);
+    animation:celebPopIn .42s cubic-bezier(.22,1.4,.36,1);
+    z-index:1;
+  }
+  @keyframes celebPopIn{
+    0%  {transform:scale(.52) translateY(40px);opacity:0;filter:brightness(3.5) blur(6px)}
+    55% {filter:brightness(1.4) blur(0)}
+    100%{transform:scale(1) translateY(0);opacity:1;filter:brightness(1) blur(0)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .celeb-modal{animation:popIn .24s ease}
+    @keyframes celebPopIn{}
+  }
+  .celeb-modal .m-close{
+    position:absolute;top:16px;right:18px;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt-dim);
+    font-size:20px;line-height:1;cursor:pointer;transition:.18s;
+  }
+  .celeb-modal .m-close:hover{color:var(--cyan);border-color:var(--cyan)}
+  .celeb-icon{font-size:72px;display:block;margin-bottom:18px;line-height:1;filter:drop-shadow(0 0 20px rgba(63,240,255,.85))}
+  .celeb-modal h2{
+    font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:.02em;
+    background:linear-gradient(90deg,#fff 30%,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:10px;
+  }
+  .celeb-modal .celeb-body{
+    color:var(--txt-dim);font-size:13.5px;line-height:1.65;
+    margin:0 auto 26px;max-width:400px;
+  }
+  /* Tron scan-line sweep across the modal */
+  @keyframes celeb-scan{
+    0%{top:-3px;opacity:0}8%{opacity:.75}92%{opacity:.5}100%{top:calc(100% + 3px);opacity:0}
+  }
+  .celeb-scan-line{
+    position:absolute;left:0;right:0;height:2px;top:-3px;pointer-events:none;
+    background:linear-gradient(90deg,transparent 0%,var(--cyan) 40%,rgba(255,255,255,.9) 50%,var(--cyan) 60%,transparent 100%);
+    box-shadow:0 0 10px 2px rgba(63,240,255,.7);
+    animation:celeb-scan 2s ease-out .15s both;
+  }
+  @media(prefers-reduced-motion:reduce){.celeb-scan-line{display:none}}
+  /* floating Tron-colored confetti particles (JS-generated) */
+  .celeb-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px}
+  .cp{
+    position:absolute;border-radius:50%;
+    animation:cp-drift var(--cpd,1.8s) ease-out var(--cpdelay,0s) both;
+  }
+  @keyframes cp-drift{
+    0%{opacity:.9;transform:translate(0,0) scale(1)}
+    100%{opacity:0;transform:translate(var(--tx,0px),var(--ty,60px)) scale(.3)}
+  }
+  @media(prefers-reduced-motion:reduce){.cp{display:none}}
+  /* credit line under Want More button */
+  .celeb-credit{
+    display:block;font-size:11px;color:var(--txt-dim);opacity:.5;
+    margin-top:9px;letter-spacing:.04em;line-height:1.4;
+  }
+
+  /* ---- TRON light-cycle canvas (celebration backdrop, sits at z-index:0 behind modal) ---- */
+  #celeb-tron{
+    position:absolute;inset:0;width:100%;height:100%;
+    pointer-events:none;z-index:0;display:block;
+  }
+
+  /* ---- Feedback survey ---- */
+  .feedback-btn{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    font-size:11.5px;color:var(--txt-dim);letter-spacing:.05em;
+    text-decoration:underline dotted;text-underline-offset:3px;
+    padding:2px 0;opacity:.5;transition:.2s;
+  }
+  .feedback-btn:hover{color:var(--cyan);opacity:1}
+  .fb-backdrop{
+    position:fixed;inset:0;z-index:55;display:none;
+    align-items:center;justify-content:center;
+    padding:40px 20px;overflow-y:auto;
+    background:rgba(0,0,0,.82);backdrop-filter:blur(5px);
+  }
+  .fb-backdrop.open{display:flex;animation:fadeIn .2s ease}
+  .fb-modal{
+    position:relative;width:100%;max-width:560px;
+    background:linear-gradient(180deg,rgba(12,13,16,.97),rgba(0,0,0,.98));
+    border:1px solid var(--line);border-left:8px solid var(--cyan);
+    border-radius:18px;padding:30px 34px 34px;margin:auto;
+    box-shadow:0 0 60px rgba(0,0,0,.75),0 0 36px rgba(63,240,255,.16);
+    animation:popIn .2s ease;
+  }
+  .fb-modal .m-close{
+    position:absolute;top:16px;right:18px;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt-dim);
+    font-size:20px;line-height:1;cursor:pointer;transition:.18s;
+  }
+  .fb-modal .m-close:hover{color:var(--cyan);border-color:var(--cyan)}
+  .fb-modal .m-eyebrow{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
+  .fb-modal h2{font-size:clamp(18px,3vw,24px);font-weight:700;color:#fff;letter-spacing:.01em;padding-right:40px;margin-bottom:6px}
+  .fb-sub{color:var(--txt-dim);font-size:13px;margin-bottom:20px}
+  .star-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+  .sr-label{font-size:12.5px;color:var(--txt);min-width:168px;letter-spacing:.02em}
+  .stars-overall .sr-label{color:var(--cyan);font-weight:600}
+  .stars-widget{display:flex;gap:3px}
+  .stars-widget button{
+    background:none;border:none;cursor:pointer;padding:2px;
+    font-size:20px;color:rgba(255,255,255,.14);transition:.1s;line-height:1;
+  }
+  .stars-widget button.lit{color:var(--amber);text-shadow:0 0 7px rgba(255,194,75,.55)}
+  .stars-widget button:hover{color:var(--amber);text-shadow:0 0 10px rgba(255,194,75,.7)}
+  .stars-widget button:focus-visible{outline:1px solid var(--amber);border-radius:2px;outline-offset:1px}
+  .fb-rule{height:1px;background:var(--line);margin:16px 0}
+  .fb-modal textarea{
+    width:100%;background:rgba(63,240,255,.04);border:1px solid var(--line);
+    border-radius:10px;padding:12px 14px;color:var(--txt);font-family:inherit;
+    font-size:13px;resize:vertical;min-height:80px;transition:.15s;margin-bottom:16px;
+  }
+  .fb-modal textarea:focus{outline:none;border-color:var(--cyan-dim);box-shadow:0 0 10px rgba(63,240,255,.12)}
+  .fb-modal textarea::placeholder{color:var(--txt-dim);opacity:.55}
+  .fb-submit{
+    display:inline-flex;align-items:center;gap:7px;padding:8px 22px;border-radius:10px;
+    border:1px solid var(--cyan);background:rgba(63,240,255,.07);
+    color:var(--cyan);font-size:13px;font-family:inherit;
+    cursor:pointer;letter-spacing:.05em;transition:.15s;
+  }
+  .fb-submit:hover{background:rgba(63,240,255,.16);box-shadow:0 0 14px rgba(63,240,255,.2)}
+  .fb-thankyou{text-align:center;padding:14px 0 6px}
+  .fb-thankyou .ty-icon{font-size:34px;display:block;margin-bottom:10px}
+  .fb-thankyou p{color:var(--txt-dim);font-size:14px;line-height:1.6}
+  /* ---- footer average-stars widget ---- */
+  .fb-footer-widget{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+  .fb-avg{display:flex;align-items:center;gap:7px;font-size:12px}
+  .fb-avg-stars{position:relative;display:inline-block;line-height:1;font-size:15px}
+  .fb-avg-track{color:rgba(255,255,255,.18);letter-spacing:1px;display:block}
+  .fb-avg-fill{position:absolute;top:0;left:0;overflow:hidden;white-space:nowrap;color:var(--amber);letter-spacing:1px;width:0%;display:block;text-shadow:0 0 6px rgba(255,194,75,.5)}
+  .fb-avg-label{color:var(--txt-dim);white-space:nowrap}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="bezel">
+  <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+
+  <header>
+    <div class="eyebrow">Jonathan Coco &times; AI</div>
+    <h1>Project Showcase</h1>
+    <p class="sub">A field-tested body of work in geospatial &amp; LiDAR processing, QGIS plugin development, drone/field survey tooling, and AI integration. Projects are weighted by depth of work — larger cards reflect where the most work went.</p>
+    <div class="meta-row">
+      <div><b id="m-count">0</b>Projects</div>
+      <div><b id="m-qgis">0</b>QGIS plugins</div>
+      <div><b id="m-active">0</b>Active / shipped</div>
+      <div><b>~&nbsp;TLDR</b>Read time</div>
+    </div>
+    <div class="rule"></div>
+    <div class="audio-row">
+      <button class="audio-toggle" id="audio-toggle" aria-pressed="false" title="Toggle spoken narration for each project card">
+        <span class="audio-icon">&#x1F508;</span>
+        <span class="audio-label">Enable Audio Guidance</span>
+      </button>
+      <span class="audio-hint">Click to hear an intro, then click any card for a spoken summary</span>
+    </div>
+  </header>
+
+  <div class="filters" id="filters"></div>
+
+  <div id="featured-wrap">
+    <div class="section-label">Flagship Work <span>// deepest investment</span></div>
+    <div class="grid feat" id="grid-feat"></div>
+  </div>
+
+  <div id="standard-wrap">
+    <div class="section-label">Core Projects <span>// shipped &amp; in active development</span></div>
+    <div class="grid std" id="grid-std"></div>
+  </div>
+
+  <div id="mini-wrap">
+    <div class="section-label">Focused Tools &amp; Utilities <span>// single-purpose, smaller scope</span></div>
+    <div class="grid mini" id="grid-mini"></div>
+  </div>
+
+  <footer>
+    <span>Generated for portfolio review &middot; statuses: Active / Mature shipped &middot; Beta / WIP = in progress</span>
+    <span id="gen-date"></span>
+    <div class="fb-footer-widget">
+      <button class="feedback-btn" id="feedback-btn">Leave Feedback</button>
+      <div id="fb-avg" class="fb-avg">
+        <span class="fb-avg-stars"><span class="fb-avg-track">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="fb-avg-fill" id="fb-avg-fill">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+        <span class="fb-avg-label" id="fb-avg-label">Loading&#8230;</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="zoom-backdrop" id="zoom-backdrop">
+  <button class="z-btn z-close" data-zoom="close" aria-label="Close">&times;</button>
+  <button class="z-btn z-prev" data-zoom="prev" aria-label="Previous">&#8249;</button>
+  <img id="zoom-img" alt="enlarged screenshot"/>
+  <button class="z-btn z-next" data-zoom="next" aria-label="Next">&#8250;</button>
+  <div class="z-count" id="zoom-count"></div>
+</div>
+
+<!-- ---- Completionist celebration modal ---- -->
+<div class="celeb-backdrop" id="celeb-backdrop" role="dialog" aria-modal="true" aria-label="Completionist Achievement">
+  <canvas id="celeb-tron" aria-hidden="true"></canvas>
+  <div class="celeb-modal" id="celeb-modal">
+    <div class="celeb-particles" id="celeb-particles"></div>
+    <div class="celeb-scan-line"></div>
+    <button class="m-close" id="celeb-close" aria-label="Close">&times;</button>
+    <span class="celeb-icon">&#x26A1;</span>
+    <h2>Completionist Unlocked</h2>
+    <p class="celeb-body">You've explored every project in this showcase &mdash; all <span id="celeb-count">0</span> of them. Impressive dedication to going deep.</p>
+    <a class="report-link" href="https://youtu.be/mcYl70vq_Ns?si=-qgapf_u7eYFAuCU" target="_blank" rel="noopener">&#x25B6;&nbsp;Want More?</a>
+    <span class="celeb-credit">Video shared by Bryan Lewis &mdash; thanks!</span>
+  </div>
+</div>
+
+<!-- ---- Feedback survey modal ---- -->
+<div class="fb-backdrop" id="fb-backdrop" role="dialog" aria-modal="true" aria-label="Feedback Survey">
+  <div class="fb-modal">
+    <button class="m-close" id="fb-close" aria-label="Close">&times;</button>
+    <div class="m-eyebrow">Showcase Feedback</div>
+    <h2>Rate This Portfolio</h2>
+    <p class="fb-sub">How did the showcase land overall? Takes about 30 seconds.</p>
+    <div id="fb-form">
+      <div class="star-row" data-section="Overall Layout &amp; Theme">
+        <span class="sr-label">Overall Layout &amp; Theme</span>
+        <div class="stars-widget" role="group" aria-label="Overall Layout &amp; Theme rating">
+          <button type="button" data-v="1" aria-label="1 star — Overall Layout &amp; Theme">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Overall Layout &amp; Theme">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Overall Layout &amp; Theme">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Overall Layout &amp; Theme">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Overall Layout &amp; Theme">&#9733;</button>
+        </div>
+      </div>
+      <div class="star-row" data-section="Navigation &amp; Filtering">
+        <span class="sr-label">Navigation &amp; Filtering</span>
+        <div class="stars-widget" role="group" aria-label="Navigation &amp; Filtering rating">
+          <button type="button" data-v="1" aria-label="1 star — Navigation &amp; Filtering">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Navigation &amp; Filtering">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Navigation &amp; Filtering">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Navigation &amp; Filtering">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Navigation &amp; Filtering">&#9733;</button>
+        </div>
+      </div>
+      <div class="star-row" data-section="Titles &amp; Descriptions">
+        <span class="sr-label">Titles &amp; Descriptions</span>
+        <div class="stars-widget" role="group" aria-label="Titles &amp; Descriptions rating">
+          <button type="button" data-v="1" aria-label="1 star — Titles &amp; Descriptions">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Titles &amp; Descriptions">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Titles &amp; Descriptions">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Titles &amp; Descriptions">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Titles &amp; Descriptions">&#9733;</button>
+        </div>
+      </div>
+      <div class="star-row" data-section="Audio Guidance">
+        <span class="sr-label">Audio Guidance</span>
+        <div class="stars-widget" role="group" aria-label="Audio Guidance rating">
+          <button type="button" data-v="1" aria-label="1 star — Audio Guidance">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Audio Guidance">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Audio Guidance">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Audio Guidance">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Audio Guidance">&#9733;</button>
+        </div>
+      </div>
+      <div class="star-row" data-section="Screenshots/Visuals">
+        <span class="sr-label">Screenshots/Visuals</span>
+        <div class="stars-widget" role="group" aria-label="Screenshots/Visuals rating">
+          <button type="button" data-v="1" aria-label="1 star — Screenshots/Visuals">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Screenshots/Visuals">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Screenshots/Visuals">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Screenshots/Visuals">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Screenshots/Visuals">&#9733;</button>
+        </div>
+      </div>
+      <div class="fb-rule"></div>
+      <div class="star-row stars-overall" data-section="Overall Impression">
+        <span class="sr-label">Overall Impression</span>
+        <div class="stars-widget" role="group" aria-label="Overall Impression rating">
+          <button type="button" data-v="1" aria-label="1 star — Overall Impression">&#9733;</button>
+          <button type="button" data-v="2" aria-label="2 stars — Overall Impression">&#9733;</button>
+          <button type="button" data-v="3" aria-label="3 stars — Overall Impression">&#9733;</button>
+          <button type="button" data-v="4" aria-label="4 stars — Overall Impression">&#9733;</button>
+          <button type="button" data-v="5" aria-label="5 stars — Overall Impression">&#9733;</button>
+        </div>
+      </div>
+      <div class="fb-rule"></div>
+      <textarea id="fb-comments" placeholder="Any other thoughts? (optional)"></textarea>
+      <button class="fb-submit" id="fb-submit">&#x2709; Submit Feedback</button>
+    </div>
+    <div class="fb-thankyou" id="fb-thankyou" style="display:none">
+      <span class="ty-icon">&#x2713;</span>
+      <p>Feedback received &mdash; thanks for taking the time!</p>
+      <p style="font-size:12px;margin-top:8px;opacity:.6">Your ratings have been recorded. They help shape future improvements.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {name:"VoiceControlSetup", cat:"Voice/AI", status:"Active", effort:9,
+   tagline:"Hands-free voice interface for an AI coding agent.",
+   bullets:["Self-hosted Whisper STT + Kokoro TTS on local GPU; ~0.2s response, no cloud voice APIs","LiveKit WebRTC browser-tab audio with in-browser echo cancellation — open speakers, no headset; turn-based mode for reliable open-speaker reliability","10+ opt-in features: wake-word, visualizer orb, background sub-agent teams, SMS, proximity auto-flip; audio-device monitor for playback diagnostics","Profile-driven config + persistent session loop across every project"],
+   tech:["Python","LiveKit","Whisper","Kokoro","WebRTC","Next.js","WSL2"],
+   shots:["assets/VoiceAssistantVid.mp4","assets/VoiceAssistnat1.jpg","assets/VoiceAssistant2.png"]},
+
+  {name:"KNOWLEDGE — LLM Wiki", cat:"Voice/AI", status:"Active", effort:8,
+   tagline:"A self-maintaining knowledge base, Karpathy-wiki style.",
+   bullets:["Standalone, version-controlled wiki of durable cross-project conventions, gotchas &amp; reusable patterns","Karpathy append-and-curate method: a catalog index, per-topic wiki pages, and an ingest log","Wired into the global agent config so every project reads from and writes back to it automatically","Seeded from ~38 projects via a parallel agent fleet"],
+   tech:["Markdown","Git","Claude","MCP"], shots:["assets/knowledge-llmwiki.svg"]},
+
+  {name:"Tree Locator", cat:"QGIS Plugin", status:"Active", effort:9,
+   tagline:"Individual-tree detection &amp; full forestry analytics from LiDAR.",
+   bullets:["Two detection engines: raster CHM local-maxima and treeiso 3D point-cloud segmentation, with consensus matching","Stand inventory: trees/acre, basal area, merchantable volume, carbon/biomass, spatial-pattern statistics","DBH cylinder modeling, fire ladder-fuel risk, canopy ecology, change detection, utility-ROW encroachment","Per-tree 4-view HTML reports, DXF + Leaflet web-map export; 35+ tagged releases (v2.0–v2.35)"],
+   tech:["Python","QGIS","laspy","PDAL","SciPy","OpenCV","treeiso"],
+   shots:["assets/TreeLocator%20(1).png","assets/TreeLocator%20(2).png","assets/TreeLocator%20(3).png","assets/TreeLocator%20(4).png","assets/TreeLocator%20(5).png","assets/TreeLocator%20(6).png","assets/TreeLocator%20(7).png","assets/TreeLocator%20(8).png","assets/TreeLocator%20(13).png","assets/TreeLocator%20(9).jpg","assets/TreeLocator%20(10).jpg","assets/TreeLocator%20(11).jpg"]},
+
+  {name:"AndroidSLAM (OctoSLAM)", cat:"Geospatial/LiDAR", status:"WIP", effort:8,
+   tagline:"On-device multi-sensor SLAM for a Galaxy S24 Ultra.",
+   bullets:["Fuses LiDAR, IMU, GNSS &amp; cameras through swappable C++ backends (FAST-LIO2, ORB-SLAM3, GLIM+GTSAM)","Kotlin/Compose UI over a JNI bridge to native libslam_core; pluggable LIO / VIO / LVI / GNSS modes","External RealSense D455 depth + u-blox F9P RTK GNSS over USB-CDC","MapLibre map overlay + live 2D viz; 4,700+ source files, full NDK/CMake build"],
+   tech:["Kotlin","Compose","C++17","NDK","FAST-LIO2","MapLibre"],
+   shots:["assets/OctoSLAM%20(1).jpg","assets/OctoSLAM%20(2).jpg","assets/OctoSLAM%20(3).jpg","assets/OctoSLAM%20(4).jpg","assets/OctoSLAM%20(5).jpg","assets/OctoSLAM%20(6).jpg"]},
+
+  {name:"LiDAR Orthophoto Generator", cat:"QGIS Plugin", status:"Active", effort:8,
+   tagline:"RGB point clouds to gap-free orthophotos.",
+   bullets:["LAS/LAZ to 3-band RGB GeoTIFF via PDAL; TIN / highest-Z rasterization with IDW gap fill","Builds a true-color orthophoto straight from the point cloud","Preview-tile mode and chainable post-processing"],
+   tech:["Python","QGIS","PDAL","GDAL","ONNX"], seq:true, seqDelay:1000,
+   shots:["assets/Lidar_Orthophoto%20(0).png","assets/Lidar_Orthophoto%20(1).png","assets/Lidar_Orthophoto%20(2).png","assets/Lidar_Orthophoto%20(3).png","assets/Lidar_Orthophoto%20(4).png","assets/Lidar_Orthophoto%20(5).png","assets/Lidar_Orthophoto%20(6).png","assets/Lidar_Orthophoto%20(7).png"]},
+
+  {name:"Orthophoto AI Upscale", cat:"QGIS Plugin", status:"Active", effort:8,
+   tagline:"Real-ESRGAN super-resolution: point cloud to crisp orthophoto.",
+   bullets:["Real-ESRGAN x4 super-resolution over ONNX + DirectML — GPU upscaling, no CUDA or admin install","Carries the orthophoto from point cloud all the way to a sharp, upscaled image","Live-streamed first-run setup with SHA-256-verified AI model download","Chainable auto-upscale post-process step"],
+   tech:["Python","QGIS","ONNX","Real-ESRGAN","DirectML"], seq:true, thumb:"assets/Lidar_OrthophotoAIupscale%205.png",
+   shots:["assets/Lidar_OrthophotoAIupscale%201.png","assets/Lidar_OrthophotoAIupscale%202.png","assets/Lidar_OrthophotoAIupscale%203.png","assets/Lidar_OrthophotoAIupscale%204.png","assets/Lidar_OrthophotoAIupscale%205.png"]},
+
+  {name:"Segment Adjust", cat:"QGIS Plugin", status:"Active", effort:8,
+   tagline:"Per-segment vertical adjustment of LiDAR surfaces.",
+   bullets:["Segments a surface by user polygons and solves an optimal vertical shift per segment from GNSS control","Interactive polygon digitizing with snapping + topology validation (gap/overlap detection)","Mean / median / custom shift methods, edge feathering, before/after accuracy tracking","Guided wizard UI with HTML/CSV reporting; integrates with RMSez"],
+   tech:["Python","QGIS","GDAL","RMSez"],
+   shots:["assets/Segment_Adjust.png","assets/Segment_Adjust1.png","assets/Segment_Adjust4.png","assets/Segment_Adjust%20(2).png"]},
+
+  {name:"DronePilotAirspaceCommand (DPAC)", cat:"Drone", status:"Beta", effort:7,
+   tagline:"Real-time situational-awareness dashboard for drone pilots.",
+   bullets:["FAA airspace classes (B/C/D, NFZ, LAANC) on an interactive MapLibre map with color-coded threat zones","Live nearby-aircraft tracking via OpenSky with proximity alerts","Weather + RainViewer precipitation radar, wind/anemometer widgets, go/no-go indicator","Audio alerts and background GPS; 124 commits — crash fix for GPS-triggered threat-engine loop"],
+   tech:["React Native","Expo","TypeScript","MapLibre","OpenSky"],
+   shots:["assets/DronePilotAirspaceCommand%20(1).jpg","assets/DronePilotAirspaceCommand%20(2).jpg","assets/DronePilotAirspaceCommand%20(3).jpg","assets/DronePilotAirspaceCommand%20(4).jpg","assets/DronePilotAirspaceCommand%20(5).jpg"]},
+
+  {name:"Lidarmill Uploader", cat:"Drone", status:"Beta", effort:7,
+   tagline:"Auto-discovers a LiDAR scanner and ships missions to the cloud.",
+   bullets:["Finds a Recon-XT scanner over Wi-Fi (mDNS) and lists available missions","Chunked, resumable multipart upload to the LidarMill API; Room DB tracks chunk progress","Foreground services keep download/upload alive across the field","Built from a reverse-engineered CBOR/Bearer web API"],
+   tech:["Kotlin","Android","Room","Hilt","Retrofit"],
+   shots:["assets/LidarMillUploader%20(1).jpg","assets/LidarMillUploader%20(2).jpg","assets/LidarMillUploader%20(3).jpg","assets/lidarmill-1.jpg"]},
+
+  {name:"Point Cloud Modeler", cat:"QGIS Plugin", status:"WIP", effort:6,
+   tagline:"Parametric steel &amp; piping modeling against point clouds.",
+   bullets:["Places parametric structural members (beams, pipes) against LAS/LAZ/COPC/EPT clouds in QGIS","'Fit to Cloud' as-built fitting: axis-fit steel members and circle-fit pipes to the point cross-section, with elevation snap on placement","Exports to IFC (open BIM) via IfcOpenShell; AISC pipe catalog + QGIS-4 mesh 3D renderer and 2D pipe/plate views","Layered architecture: geometry kernel, catalog, rendering, persistence; 145 commits"],
+   tech:["Python","QGIS","IfcOpenShell","OpenCASCADE"], shots:[]},
+
+  {name:"PDAL GUI", cat:"QGIS Plugin", status:"Active", effort:6,
+   tagline:"Point-cloud processing pipelines without the command line.",
+   bullets:["Qt dialogs wrap PDAL: classification, tiling, conversion, above-ground clipping, Grid Snap voxel downsample","Auto-detects the PDAL executable, parses metadata, reports CRS/units","Pipeline presets, template management, map-click coordinate picker","Runs async via the QGIS task manager with progress; 92 commits"],
+   tech:["Python","PyQt","QGIS","PDAL"],
+   shots:["assets/PDAL_GUI1.png","assets/PDAL_GUI2.png","assets/PDAL_GUI3.png","assets/PDAL_GUI4.png"]},
+
+  {name:"Make Cool Maps", cat:"QGIS Plugin", status:"Active", effort:6,
+   tagline:"One-click cartographic styling for terrain data.",
+   bullets:["9 built-in styles: Fancy DTM, Layer Cake, Tanaka contours, texture shading, LRM X-Ray, TPI…","Accepts LAS/LAZ (auto-converts to DTM via PDAL) or GeoTIFF rasters","Per-style tunable parameters via auto-generated widgets; optional 3D extrusion","Extensible — add a style by subclassing MapStyle"],
+   tech:["Python","QGIS","PDAL","GDAL"], shots:["assets/MakeCoolMaps.png","assets/MakeCoolMaps2.png","assets/MakeCoolMaps3.png","assets/MakeCoolMaps4.png"]},
+
+  {name:"QGIS Animation Tool", cat:"QGIS Plugin", status:"WIP", effort:4,
+   tagline:"Timeline-based animation of maps &amp; layers in QGIS.",
+   bullets:["Keyframe-driven animation of layer state, camera and time in QGIS","Exports frame sequences / video for fly-throughs and temporal data","Early build — actively in development, not yet field-tested"],
+   tech:["Python","QGIS","PyQGIS"], shots:[]},
+
+  {name:"LandXML Converter", cat:"QGIS Plugin", status:"Active", effort:3,
+   tagline:"Imports LandXML surfaces &amp; alignments, with extra exports.",
+   bullets:["Heavily modified from an existing converter with added export formats","Brings LandXML TIN surfaces and alignments into QGIS","Small, single-purpose utility for survey/CAD interchange"],
+   tech:["Python","QGIS","LandXML"], shots:[]},
+
+  {name:"3D Toolset", cat:"QGIS Plugin", status:"WIP", effort:6,
+   tagline:"CAD-style 3D modeling &amp; point-cloud editing inside QGIS.",
+   bullets:["Dockable 3D viewport with 2D/3D sync","Interactive clipping box with draggable grip handles; section-plane cross-section viewer","Full CAD drawing suite: line, arc, circle, polygon, text with snapping","CAD construction tools: offset, trim, fillet + layer manager"],
+   tech:["Python","QGIS","PyQGIS","Qt"],
+   shots:["assets/3D%20Toolset.png","assets/3D%20Toolset1.png","assets/3D%20Toolset2.png"]},
+
+  {name:"SonarPi", cat:"Geospatial/LiDAR", status:"Active", effort:5,
+   tagline:"Raspberry-Pi hydrographic survey logger.",
+   bullets:["Syncs RTK GNSS (Emlid Reach RS3) with Bluetooth sonar depth within 0.5s","RTK-only logging with WGS84 to Louisiana State Plane transformation","GEOID18 correction for NAVD88 elevations in feet","Flask web UI with live map; systemd auto-reconnect for field use"],
+   tech:["Python","Raspberry Pi","pyproj","Flask","Bluetooth"],
+   shots:["assets/SonarPi%20(0).jpg","assets/SonarPi%20(2).jpg","assets/SonarPi%20(3).jpg","assets/SonarPi%20(4).jpg","assets/SonarPi%20(5).jpg","assets/SonarPi%20(6).jpg","assets/SonarPi%20(7).jpg","assets/SonarPi.jpg","assets/SonarPi.png","assets/SonarPi2.png"]},
+
+  {name:"3D Elevation Profile Digitizer", cat:"QGIS Plugin", status:"Active", effort:5,
+   tagline:"Interactive 3D digitizing in the QGIS profile panel.",
+   bullets:["Adds point &amp; line digitizing to the elevation-profile canvas with full Z preservation","Snaps to point-cloud vertices, raster elevations and other layers","Exports PointZ / LineStringZ to GeoPackage or Shapefile","X-ray profile rendering and horizontal cross-sections; 109 commits"],
+   tech:["Python","QGIS","PyQGIS","GeoPackage"],
+   shots:["assets/ModelBySection.mp4","assets/ModelbySection.png","assets/ModelbySection1.png"]},
+
+  {name:"X-Ray Cross-Section View", cat:"QGIS Plugin", status:"Active", effort:5,
+   tagline:"See-through point-cloud rendering that mimics a micro-CT scan.",
+   bullets:["Renders surfaces and point clouds with X-ray-style transparency to expose internal structure","Mimics the look of a micro-CT cross-section for seeing what's inside a feature","Grew out of the 3D elevation-profile work for slicing through point clouds"],
+   tech:["Python","QGIS","PyQGIS"],
+   shots:["assets/XRAY1.png","assets/XRAY2.png"]},
+
+  {name:"Drone GNSS Extractor", cat:"QGIS Plugin", status:"Beta", effort:5,
+   tagline:"DJI RTK drone data to survey-grade coordinates.",
+   bullets:["Parses DJI M300/P1 MRK timestamp files and XMP photo tags into RTK points","Clusters and averages redundant fixes per ground point for survey accuracy","Exports PNEZD CSV + permanent GeoPackage layers","CRS validation gate and background QgsTask pipeline; 70 commits"],
+   tech:["Python","QGIS","PyQt5","GeoPackage"],
+   shots:["assets/Drone_GNSS_Extractor%20(1).png","assets/Drone_GNSS_Extractor%20(4).png","assets/Drone_GNSS_Extractor%20(5).png"]},
+
+  {name:"Noēma", cat:"Voice/AI", status:"Beta", effort:2,
+   tagline:"AI-driven “rabbit hole” feed of wisdom quotes.",
+   bullets:["Scrollable feed of curated quotes across philosophical traditions, with bookmarks","Tap any quote to unfold AI-generated layers (biographical, historical, modern resonance)","Each layer branches 3 ways, up to 10 layers deep; local journey graph via Dexie","Next.js 15 + Anthropic Claude SDK"],
+   tech:["Next.js","TypeScript","Claude SDK","Dexie"], thumb:"assets/Noema%20(1).png",
+   shots:["assets/Noema%20(1).png","assets/Noema%20(2).png","assets/Noema%20(3).png"]},
+
+  {name:"RMSez", cat:"QGIS Plugin", status:"Active", effort:4,
+   tagline:"Vertical-accuracy QC for LiDAR DEMs (RMSz).",
+   bullets:["Computes RMSz against GNSS ground control per ASPRS/USGS standards","Supports raster DEM/DTM and mesh (.2dm) surfaces with barycentric interpolation","Automated z-score outlier detection &amp; exclusion","Color-coded HTML + CSV accuracy reports with project headers"],
+   tech:["Python","QGIS","PyQt","NumPy"], report:"assets/RMSz_Report_20260626_141458.html",
+   shots:["assets/RMSez(1).png"]},
+
+  {name:"QuadricEdgeCollapse", cat:"QGIS Plugin", status:"Active", effort:8,
+   tagline:"Quadric edge-collapse mesh decimation in QGIS.",
+   bullets:["Quadric-error mesh decimation inside the QGIS Processing framework","2D &amp; 3D (Z) polygon layers — terrain and building models","Four cost metrics: Quadric Error, Edge Length, Angle Deviation, Hybrid","Optional boundary preservation; toolbar + Processing Toolbox"],
+   tech:["Python","QGIS","NumPy"], report:"assets/Quadric_EdgeCollapse(5)_OrangeGrove_QEC_R11_report.html",
+   shots:["assets/QuadricEdgeCollapse.png","assets/QuadricEdgeCollapse0.png","assets/QuadricEdgeCollapse1.png","assets/QuadricEdgeCollapse4.png"]},
+
+  {name:"Line Interpolator", cat:"QGIS Plugin", status:"Active", effort:4,
+   tagline:"Drapes survey elevations onto 2D polylines.",
+   bullets:["Linearly interpolates Z onto polyline vertices from PNEZD survey points","Outputs true LineStringZ geometry","GUI dialog + Processing Toolbox algorithm for batch use","US Survey Feet aware; works in Processing models"],
+   tech:["Python","QGIS","PyQGIS"], shots:[]},
+
+  {name:"Breakline Generator", cat:"QGIS Plugin", status:"Beta", effort:4,
+   tagline:"Extracts 3D breaklines from point clouds &amp; DEMs.",
+   bullets:["Three modes: dip-angle, geometric-feature (PCA), and TIN ridge/valley extraction","DBSCAN clustering, MST ordering, Douglas-Peucker simplification, Z-draping","Feeds constraints to the Quadric Edge Collapse decimation plugin","Outputs LineStringZ GeoPackage layers"],
+   tech:["Python","QGIS","laspy","scikit-learn","GDAL"], shots:[]},
+
+  {name:"TBC Grading Model Tools", cat:"Other", status:"WIP", effort:4,
+   tagline:"Lets Claude drive Trimble Business Center grading.",
+   bullets:["MCP server bridges Claude to an in-TBC C# plugin over JSON-RPC","Import spot elevations from CSV/PDF, create COGO points/polylines, build TIN surfaces","Two-layer design: server tools work without TBC open; bridge tools degrade gracefully","Harvests TBC SDK DLLs for local builds without a full install"],
+   tech:["Python","FastMCP","C#","Trimble TBC SDK"], shots:[]},
+
+  {name:"Recon PixDat Tagger", cat:"Geospatial/LiDAR", status:"Beta", effort:3,
+   tagline:"Geotags Phoenix LiDAR imagery from pose data.",
+   bullets:["Reads pix.dat GPS + pose (roll/pitch/yaw) from Recon-XT systems","Writes GPS + pose into JPEG EXIF tags","Auto-detects pix.dat files and batch-processes recursively","tkinter GUI with progress bar and match statistics"],
+   tech:["Python","tkinter","piexif","Pillow"], shots:["assets/recon-1.png"]},
+
+  {name:"I-Frame Extractor UI", cat:"Utility", status:"Beta", effort:3,
+   tagline:"Web UI + FFmpeg backend for keyframe extraction.",
+   bullets:["HTML frontend builds a JSON config for extraction settings","Python/FFmpeg backend batch-processes H.264/H.265 video","Four modes: all I-frames, by interval, by count, keyframes only","JPEG/PNG/BMP output with quality &amp; resize control"],
+   tech:["Python","FFmpeg","HTML/JS","Flask"], shots:[]},
+
+  {name:"duhcrypt", cat:"Utility", status:"Beta", effort:3,
+   tagline:"Turns a memorable phrase into a strong password.",
+   bullets:["Iterated SHA3-512 hashing (configurable rounds) + user salt for dictionary resistance","Substitution tables map hash digits to diverse character sets","Outputs 128–512+ character complex passwords","Bash CLI + Python tkinter GUI"],
+   tech:["Bash","Python","tkinter","SHA3-512"], shots:[]},
+
+  {name:"RGB Point Cloud Rasterizer", cat:"QGIS Plugin", status:"Mature", effort:2,
+   tagline:"LAZ RGB clouds to full-color rasters.",
+   bullets:["Converts LAZ point clouds to RGB raster via PDAL exportraster","Portable .model3 files for the QGIS Processing Toolbox","Configurable output resolution","No-code, drag-and-drop graphical workflow"],
+   tech:["QGIS","PDAL","LiDAR"], shots:[]},
+
+  {name:"GEOID18", cat:"Geospatial/LiDAR", status:"WIP", effort:2,
+   tagline:"NOAA GEOID18 vertical-datum visualization workspace.",
+   bullets:["Loads the NOAA GEOID18 geoid model for undulation across the contiguous US","Hillshade-rendered geoid surface maps","NGS GPS-on-benchmark data to validate the model","State Plane zone reference layers in multiple formats"],
+   tech:["QGIS","GeoTIFF","NOAA GEOID18"], shots:["assets/geoid18-1.png"]},
+
+  {name:"Ghostscript PDFCompress", cat:"Utility", status:"Mature", effort:1,
+   tagline:"Drag-and-drop PDF compression.",
+   bullets:["Drop PDFs onto a batch file to compress them via Ghostscript","Uses the pdfwrite /ebook quality preset","Outputs a separate _compressed.pdf and reports size reduction","Skips non-PDF inputs gracefully"],
+   tech:["PowerShell","Ghostscript","Batch"], shots:[]},
+];
+
+// slug → mp3 filename mapping (assets/audio/<slug>.mp3)
+const AUDIO_SLUGS = {
+  "VoiceControlSetup":             "voice-control-setup",
+  "KNOWLEDGE — LLM Wiki":     "knowledge-llm-wiki",
+  "Tree Locator":                  "tree-locator",
+  "AndroidSLAM (OctoSLAM)":       "android-slam",
+  "LiDAR Orthophoto Generator":   "lidar-orthophoto-generator",
+  "Orthophoto AI Upscale":         "orthophoto-ai-upscale",
+  "Segment Adjust":                "segment-adjust",
+  "DronePilotAirspaceCommand (DPAC)": "drone-pilot-airspace-command",
+  "Lidarmill Uploader":            "lidarmill-uploader",
+  "Point Cloud Modeler":           "point-cloud-modeler",
+  "PDAL GUI":                      "pdal-gui",
+  "Make Cool Maps":                "make-cool-maps",
+  "QGIS Animation Tool":           "qgis-animation-tool",
+  "LandXML Converter":             "landxml-converter",
+  "3D Toolset":                    "3d-toolset",
+  "SonarPi":                       "sonarpi",
+  "3D Elevation Profile Digitizer":"3d-elevation-profile-digitizer",
+  "X-Ray Cross-Section View":      "x-ray-cross-section-view",
+  "Drone GNSS Extractor":          "drone-gnss-extractor",
+  "Noēma":                    "noema",
+  "RMSez":                         "rmsez",
+  "QuadricEdgeCollapse":           "quadric-edge-collapse",
+  "Line Interpolator":             "line-interpolator",
+  "Breakline Generator":           "breakline-generator",
+  "TBC Grading Model Tools":       "tbc-grading-model-tools",
+  "Recon PixDat Tagger":           "recon-pixdat-tagger",
+  "I-Frame Extractor UI":          "iframe-extractor-ui",
+  "duhcrypt":                      "duhcrypt",
+  "RGB Point Cloud Rasterizer":    "rgb-point-cloud-rasterizer",
+  "GEOID18":                       "geoid18",
+  "Ghostscript PDFCompress":       "ghostscript-pdf-compress",
+};
+
+const catClass = c => c==="Drone"?"cat-drone":c==="Voice/AI"?"cat-voiceai":c==="Utility"?"cat-utility":"";
+const esc = s => s;
+
+// shots can be images OR short video clips (mp4/webm/mov) — clips autoplay muted in a loop
+// flag tall (portrait) media so it shows full aspect instead of being cropped
+function markPortrait(root){
+  root.querySelectorAll('img,video').forEach(el=>{
+    const chk=()=>{ const w=el.naturalWidth||el.videoWidth||0, h=el.naturalHeight||el.videoHeight||0;
+      if(w&&h) el.classList.toggle('portrait', h>w*1.1); };
+    chk();
+    el.addEventListener('load',chk); el.addEventListener('loadedmetadata',chk);
+  });
+}
+const isVid = s => /\.(mp4|webm|mov|m4v)$/i.test(s);
+const mediaTag = (src, cls, alt) => isVid(src)
+  ? '<video class="'+cls+'" src="'+src+'" autoplay loop muted playsinline preload="metadata"></video>'
+  : '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="lazy"/>';
+
+function effortDots(n){
+  let h='<div class="effort" title="Depth of work '+n+'/10">';
+  const lvl=Math.round(n/2); // 0..5
+  for(let i=1;i<=5;i++) h+='<i class="'+(i<=lvl?'on':'')+'"></i>';
+  return h+'</div>';
+}
+
+function cardHTML(p,feat){
+  // p.thumb overrides which image the card shows; otherwise the first shot
+  const thumbSrc = p.thumb || (p.shots && p.shots.length ? p.shots[0] : null);
+  const shot = thumbSrc ? mediaTag(thumbSrc, 'shot', p.name+' preview') : '';
+  const audioSlug = AUDIO_SLUGS[p.name] || '';
+  return '<article class="card '+catClass(p.cat)+(feat?' feat':'')+'" data-cat="'+p.cat+'" data-idx="'+PROJECTS.indexOf(p)+'"'+(audioSlug?' data-audio="'+audioSlug+'"':'')+' >'
+    + '<span class="status s-'+p.status+'">'+p.status+'</span>'
+    + shot
+    + '<h3>'+p.name+'</h3>'
+    + '<div class="tagline">'+p.tagline+'</div>'
+    + '<ul>'+p.bullets.map(b=>'<li>'+b+'</li>').join('')+'</ul>'
+    + '<div class="foot">'+p.tech.slice(0,5).map(t=>'<span class="tech">'+t+'</span>').join('')
+    + effortDots(p.effort)+'</div>'
+    + (p.report?'<a class="report-link" href="'+p.report+'" target="_blank" rel="noopener">&#128196; View full report</a>':'')
+    + '</article>';
+}
+
+// WIP sinks to the bottom of its tier (stable — keeps effort order otherwise)
+const wipLast = arr => arr.map((p,i)=>[p,i])
+  .sort((a,b)=>((a[0].status==="WIP")-(b[0].status==="WIP"))||(a[1]-b[1]))
+  .map(x=>x[0]);
+const feat = wipLast(PROJECTS.filter(p=>p.effort>=8));
+const std  = wipLast(PROJECTS.filter(p=>p.effort>=5 && p.effort<8));
+const mini = wipLast(PROJECTS.filter(p=>p.effort<5));
+
+document.getElementById('grid-feat').innerHTML = feat.map(p=>cardHTML(p,true)).join('');
+document.getElementById('grid-std').innerHTML  = std.map(p=>cardHTML(p,false)).join('');
+document.getElementById('grid-mini').innerHTML = mini.map(p=>cardHTML(p,false)).join('');
+markPortrait(document);
+
+document.getElementById('m-count').textContent  = PROJECTS.length;
+document.getElementById('m-qgis').textContent   = PROJECTS.filter(p=>p.cat==="QGIS Plugin").length;
+document.getElementById('m-active').textContent = PROJECTS.filter(p=>p.status==="Active"||p.status==="Mature").length;
+
+// filters
+const cats = ["All", ...Array.from(new Set(PROJECTS.map(p=>p.cat)))];
+const fbox = document.getElementById('filters');
+fbox.innerHTML = cats.map((c,i)=>'<span class="chip-btn'+(i===0?' active':'')+'" data-f="'+c+'">'+c+'</span>').join('');
+fbox.addEventListener('click',e=>{
+  const b=e.target.closest('.chip-btn'); if(!b)return;
+  fbox.querySelectorAll('.chip-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const f=b.dataset.f;
+  document.querySelectorAll('.card').forEach(c=>{
+    c.classList.toggle('hidden', f!=="All" && c.dataset.cat!==f);
+  });
+  ['featured-wrap','standard-wrap','mini-wrap'].forEach(id=>{
+    const w=document.getElementById(id);
+    const any=w.querySelector('.grid').querySelector('.card:not(.hidden)');
+    w.classList.toggle('hidden', !any);
+  });
+});
+
+document.getElementById('gen-date').textContent = "Generated " + new Date().toISOString().slice(0,10);
+
+// ---- detail modal / lightbox ----
+const CAT_COLORS = {
+  "QGIS Plugin":"#3dff85", "Geospatial/LiDAR":"#ff5a5a", "Voice/AI":"#b794ff",
+  "Drone":"#4d9dff", "Utility":"#ff8a3c", "Other":"#9aa6b2"
+};
+const backdrop = document.getElementById('modal-backdrop');
+const modal = document.getElementById('modal');
+
+function mosaicHTML(p){
+  if(p.shots && p.shots.length){
+    // seq projects play one box through the frames in order; others show a mosaic
+    if(p.seq && p.shots.every(s=>!isVid(s)))
+      return '<div class="seqbox"><img id="seqimg" src="'+p.shots[0]+'" alt="'+p.name+'"/>'
+        + '<div class="seqdots">'+p.shots.map((s,i)=>'<i class="'+(i===0?'on':'')+'"></i>').join('')+'</div>'
+        + '<div class="seqctrl">'
+          + '<button data-seq="prev" aria-label="Previous">&#8249;</button>'
+          + '<button data-seq="toggle" aria-label="Play or pause">&#9208;</button>'
+          + '<button data-seq="next" aria-label="Next">&#8250;</button>'
+        + '</div>'
+        + '<div class="seqcap">Step 1 / '+p.shots.length+'</div></div>';
+    let zi=-1;
+    return '<div class="mosaic">'+p.shots.map(s=>{
+      const t=mediaTag(s,'',p.name);
+      if(isVid(s)) return t;
+      zi++;
+      return t.replace('<img ','<img data-zi="'+zi+'" ');
+    }).join('')+'</div>';
+  }
+  return '<div class="mosaic"><div class="noshot">Screenshots &amp; clips coming soon.</div></div>';
+}
+let seqState={p:null,i:0,playing:false,timer:null,delay:500};
+function seqRender(){
+  const img=document.getElementById('seqimg'); if(!img||!seqState.p) return;
+  const n=seqState.p.shots.length;
+  img.src=seqState.p.shots[seqState.i];
+  markPortrait(img.parentElement);
+  modal.querySelectorAll('.seqdots i').forEach((d,di)=>d.classList.toggle('on',di===seqState.i));
+  const cap=modal.querySelector('.seqcap'); if(cap) cap.textContent='Step '+(seqState.i+1)+' / '+n;
+}
+function seqStep(d){ const n=seqState.p.shots.length; seqState.i=(seqState.i+d+n)%n; seqRender(); }
+function seqPlay(){
+  if(!seqState.p) return;
+  seqState.playing=true; clearInterval(seqState.timer);
+  seqState.timer=setInterval(()=>seqStep(1), seqState.delay);
+  const t=modal.querySelector('[data-seq="toggle"]'); if(t) t.innerHTML='&#9208;'; // pause glyph
+}
+function seqPause(){
+  seqState.playing=false; clearInterval(seqState.timer); seqState.timer=null;
+  const t=modal.querySelector('[data-seq="toggle"]'); if(t) t.innerHTML='&#9654;'; // play glyph
+}
+function startSeq(p){
+  if(!(p.seq && p.shots && p.shots.length>1 && p.shots.every(s=>!isVid(s)))) return;
+  seqState={p:p,i:0,playing:false,timer:null,delay:p.seqDelay||500};
+  seqRender(); seqPlay();
+}
+function stopSeq(){ seqPause(); seqState.p=null; }
+// slideshow controls + click-to-zoom (delegated; modal innerHTML is rebuilt each open)
+modal.addEventListener('click',e=>{
+  const mi=e.target.closest('.mosaic img[data-zi]');
+  if(mi){ openZoom(modalP, +mi.dataset.zi); return; }
+  const b=e.target.closest('[data-seq]'); if(!b||!seqState.p) return;
+  const a=b.dataset.seq;
+  if(a==='prev'){ seqPause(); seqStep(-1); }
+  else if(a==='next'){ seqPause(); seqStep(1); }
+  else if(a==='toggle'){ seqState.playing?seqPause():seqPlay(); }
+});
+let modalP=null;
+function openModal(p){
+  modalP=p;
+  modal.style.setProperty('--cat', CAT_COLORS[p.cat] || 'var(--cyan)');
+  modal.innerHTML =
+      '<button class="m-close" aria-label="Close">&times;</button>'
+    + '<div class="m-eyebrow">'+p.cat+'</div>'
+    + '<h2>'+p.name+'</h2>'
+    + '<div class="m-tagline">'+p.tagline+'</div>'
+    + '<div class="m-meta"><span class="status s-'+p.status+'">'+p.status+'</span>'+effortDots(p.effort)+'</div>'
+    + '<ul>'+p.bullets.map(b=>'<li>'+b+'</li>').join('')+'</ul>'
+    + '<div class="m-foot">'+p.tech.map(t=>'<span class="tech">'+t+'</span>').join('')+'</div>'
+    + (p.report?'<a class="report-link modal-report" href="'+p.report+'" target="_blank" rel="noopener">&#128196; View full report</a>':'')
+    + mosaicHTML(p);
+  markPortrait(modal);
+  startSeq(p);
+  backdrop.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){ stopSeq(); if(window.__narrationStop) window.__narrationStop(); backdrop.classList.remove('open'); document.body.style.overflow=''; }
+
+document.querySelectorAll('.grid').forEach(g=>g.addEventListener('click',e=>{
+  if(e.target.closest('a.report-link')) return; // let the report link open in its own tab
+  const card=e.target.closest('.card'); if(!card)return;
+  const p=PROJECTS[+card.dataset.idx]; if(p)openModal(p);
+}));
+backdrop.addEventListener('click',e=>{ if(e.target===backdrop || e.target.closest('.m-close')) closeModal(); });
+
+// ---- zoom lightbox: click a mosaic thumb to enlarge & cycle ----
+const zoomBackdrop = document.getElementById('zoom-backdrop');
+const zoomImg = document.getElementById('zoom-img');
+const zoomCount = document.getElementById('zoom-count');
+let zoomShots=[], zoomI=0;
+function renderZoom(){ zoomImg.src=zoomShots[zoomI]; zoomCount.textContent=(zoomI+1)+' / '+zoomShots.length; }
+function openZoom(p,i){
+  if(!p) return;
+  zoomShots=p.shots.filter(s=>!isVid(s)); if(!zoomShots.length) return;
+  zoomI=Math.max(0,Math.min(i,zoomShots.length-1));
+  zoomBackdrop.style.setProperty('--cat', CAT_COLORS[p.cat] || 'var(--cyan)');
+  renderZoom(); zoomBackdrop.classList.add('open');
+}
+function zoomNav(d){ const n=zoomShots.length; zoomI=(zoomI+d+n)%n; renderZoom(); }
+function closeZoom(){ zoomBackdrop.classList.remove('open'); }
+zoomBackdrop.addEventListener('click',e=>{
+  const b=e.target.closest('[data-zoom]');
+  if(b){ const a=b.dataset.zoom; if(a==='prev')zoomNav(-1); else if(a==='next')zoomNav(1); else closeZoom(); return; }
+  if(e.target===zoomBackdrop) closeZoom();
+});
+
+document.addEventListener('keydown',e=>{
+  if(zoomBackdrop.classList.contains('open')){
+    if(e.key==="Escape") closeZoom();
+    else if(e.key==="ArrowLeft") zoomNav(-1);
+    else if(e.key==="ArrowRight") zoomNav(1);
+    return;
+  }
+  if(e.key==="Escape") closeModal();
+});
+</script>
+<script>
+/* Starfield — calm idle drift + warp-speed celebration mode */
+(function(){
+  var c = document.getElementById('starfield');
+  if(!c) return;
+  var ctx = c.getContext('2d');
+  var w, h, cx, cy, dpr, stars, NUM, last = 0;
+  var warpTarget = 1, warpActual = 1, lastOp = -1; /* 1 = idle, up to ~14 = full warp */
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = c.width = Math.floor(innerWidth * dpr);
+    h = c.height = Math.floor(innerHeight * dpr);
+    c.style.width = innerWidth + 'px';
+    c.style.height = innerHeight + 'px';
+    cx = w / 2; cy = h / 2;
+    NUM = Math.min(180, Math.floor((innerWidth * innerHeight) / 6500));
+    stars = new Array(NUM);
+    for(var i=0;i<NUM;i++) stars[i] = newStar(true);
+  }
+  /* project theme palette — weighted toward star-white, with accent sprinkles */
+  var PALETTE = [
+    '214,240,255','214,240,255','214,240,255','214,240,255', /* blue-white */
+    '63,240,255',   /* cyan */
+    '255,194,75',   /* amber */
+    '255,138,60',   /* orange */
+    '93,255,176',   /* green */
+    '183,148,255'   /* violet */
+  ];
+  function newStar(seed){
+    return {
+      x:(Math.random()*2-1)*w,
+      y:(Math.random()*2-1)*h,
+      z:seed ? Math.random()*w : w,
+      col:PALETTE[(Math.random()*PALETTE.length)|0]
+    };
+  }
+  function frame(t){
+    var dt = last ? Math.min((t-last)/16.67, 3) : 1; last = t;
+
+    /* smooth warp ramp — lerp ~12% per frame toward target */
+    var lerpK = Math.min(0.12 * dt, 0.18);
+    warpActual += (warpTarget - warpActual) * lerpK;
+
+    /* canvas opacity: 0.5 idle → ~1.0 when warp is on. Brightness is decoupled
+       from the (now slower) warp magnitude — /4 divisor hits full bright at warp≈5. */
+    var op = 0.5 + 0.5 * Math.min(1, (warpActual - 1) / 4);
+    if(Math.abs(op - lastOp) > 0.02){ c.style.opacity = op.toFixed(3); lastOp = op; }
+
+    ctx.clearRect(0,0,w,h);
+    ctx.lineCap = 'round';  /* set once per frame, not per star */
+    var speed = 0.00032 * dt * warpActual; /* scaled by warp — slowed for celebration perf */
+
+    for(var i=0;i<NUM;i++){
+      var s = stars[i];
+      s.z -= speed * w;
+      if(s.z < 1){ stars[i] = newStar(false); continue; }
+      var k = 128 / s.z;
+      var px = cx + s.x * k;
+      var py = cy + s.y * k;
+      if(px<0||px>w||py<0||py>h) continue;
+      var depth = 1 - s.z/w;
+      var r = Math.max(depth * 2.2 * dpr, 0.9 * dpr);
+      var a = 0.35 + depth * 0.6;
+
+      if(warpActual > 1.8){
+        /* streak: project back along z-axis to get "tail" start point */
+        var tailLen = warpActual * 2.0;
+        var zTail = s.z + speed * w * tailLen;
+        var kTail = zTail > 0 ? 128 / zTail : k;
+        var pxT = cx + s.x * kTail;
+        var pyT = cy + s.y * kTail;
+        /* alpha boosts with warp */
+        var wa = Math.min(1, a + (warpActual - 1.8) * 0.035);
+        ctx.strokeStyle = 'rgba('+s.col+','+wa+')';
+        ctx.lineWidth = r * (1 + warpActual * 0.15);
+        ctx.beginPath();
+        ctx.moveTo(pxT, pyT);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = 'rgba('+s.col+','+a+')';
+        ctx.beginPath();
+        ctx.arc(px,py,r,0,6.283);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(frame);
+
+  /* Public warp control — called by celebration open/close */
+  window.__starfieldWarp = function(on){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    warpTarget = on ? 5 : 1;
+  };
+})();
+</script>
+<script>
+/* ---- Audio Narration (optional, off by default) ---- */
+(function(){
+  var enabled = false;
+  var player = new Audio();
+  player.preload = 'none';
+  var activeCard = null;
+
+  var btn = document.getElementById('audio-toggle');
+  var icon = btn.querySelector('.audio-icon');
+  var label = btn.querySelector('.audio-label');
+
+  function setActiveCard(card){
+    if(activeCard && activeCard !== card)
+      activeCard.classList.remove('audio-playing');
+    activeCard = card || null;
+    if(activeCard) activeCard.classList.add('audio-playing');
+  }
+
+  player.addEventListener('ended', function(){ setActiveCard(null); });
+  player.addEventListener('pause', function(){ if(player.ended) setActiveCard(null); });
+
+  // Stop card narration when its detail card/modal is closed.
+  function stop(){ player.pause(); try{ player.currentTime = 0; }catch(_){} setActiveCard(null); }
+  window.__narrationStop = stop;
+
+  function playClip(slug, card){
+    if(!enabled) return;
+    player.pause();
+    player.src = 'assets/audio/' + slug + '.mp3';
+    setActiveCard(card || null);
+    var p = player.play();
+    if(p && p.catch) p.catch(function(){});
+  }
+
+  btn.addEventListener('click', function(){
+    enabled = !enabled;
+    btn.setAttribute('aria-pressed', enabled);
+    btn.classList.toggle('audio-on', enabled);
+    icon.textContent = enabled ? '🔊' : '🔈';  // 🔊 / 🔈
+    label.textContent = enabled ? 'Audio Guidance: ON' : 'Enable Audio Guidance';
+    if(enabled){
+      playClip('intro', null);
+    } else {
+      player.pause();
+      player.src = '';
+      setActiveCard(null);
+    }
+  });
+
+  // Card click: play that card's clip (alongside the existing modal opener)
+  document.addEventListener('click', function(e){
+    if(!enabled) return;
+    if(e.target.closest('a.report-link')) return;
+    var card = e.target.closest('.card[data-audio]');
+    if(card) playClip(card.dataset.audio, card);
+  }, true);  // capture phase so it fires before existing handlers
+})();
+</script>
+<script>
+/* ---- Feature 1: Completionist tracking + celebration ---- */
+(function(){
+  var LS_VIEWED = 'ps_viewed';
+  var LS_CELEB  = 'ps_celebrated';
+  var viewedSet = new Set(JSON.parse(localStorage.getItem(LS_VIEWED) || '[]'));
+  var pendingCeleb = false;
+
+  // Wrap openModal to record each project viewed
+  var _origOpen = openModal;
+  openModal = function(p){
+    _origOpen(p);
+    var key = p.name;
+    if(!viewedSet.has(key)){
+      viewedSet.add(key);
+      try{ localStorage.setItem(LS_VIEWED, JSON.stringify([].concat(Array.from(viewedSet)))); }catch(e){}
+      if(viewedSet.size >= PROJECTS.length && !localStorage.getItem(LS_CELEB)){
+        pendingCeleb = true;
+      }
+    }
+  };
+
+  // Wrap closeModal: fire celebration once the completing project's modal is closed
+  var _origClose = closeModal;
+  closeModal = function(){
+    _origClose();
+    if(pendingCeleb){
+      pendingCeleb = false;
+      setTimeout(openCelebration, 340);
+    }
+  };
+
+  var celebBackdrop = document.getElementById('celeb-backdrop');
+  var celebClose    = document.getElementById('celeb-close');
+  var celebCountEl  = document.getElementById('celeb-count');
+
+  var celebAudio = new Audio('assets/audio/end-of-line.mp3');
+  celebAudio.loop = true;
+
+  function openCelebration(preview){
+    if(!preview){ try{ localStorage.setItem(LS_CELEB, '1'); }catch(e){} }
+    celebCountEl.textContent = PROJECTS.length;
+    spawnParticles();
+    celebBackdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if(window.__starfieldWarp) window.__starfieldWarp(true);
+    if(window.__celebTron) window.__celebTron.start();
+    celebAudio.currentTime = 0;
+    celebAudio.play().catch(function(){});
+  }
+  function closeCelebration(){
+    celebBackdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    if(window.__starfieldWarp) window.__starfieldWarp(false);
+    if(window.__celebTron) window.__celebTron.stop();
+    celebAudio.pause();
+    celebAudio.currentTime = 0;
+  }
+
+  function spawnParticles(){
+    var container = document.getElementById('celeb-particles');
+    container.innerHTML = '';
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var colors = ['63,240,255','255,194,75','93,255,176','183,148,255','255,138,60','214,240,255'];
+    for(var i = 0; i < 48; i++){
+      var el = document.createElement('div');
+      el.className = 'cp';
+      /* mix of small dots and larger glowing orbs */
+      var sz = i < 20 ? (((Math.random() * 5) + 5) | 0) : (((Math.random() * 4) + 2) | 0);
+      var col = colors[(Math.random() * colors.length) | 0];
+      var left = ((Math.random() * 90) + 5) | 0;
+      var top  = ((Math.random() * 75) + 5) | 0;
+      var dur  = (1.3 + Math.random() * 1.8).toFixed(2);
+      var dly  = (Math.random() * 0.7).toFixed(2);
+      /* wider spread — particles burst out further */
+      var tx   = ((Math.random() * 140) - 70) | 0;
+      var ty   = ((10 + Math.random() * 150)) | 0;
+      el.style.cssText =
+        'width:'+sz+'px;height:'+sz+'px;left:'+left+'%;top:'+top+'%;' +
+        'background:rgba('+col+',.95);box-shadow:0 0 '+(sz*3)+'px rgba('+col+',.8);' +
+        '--cpd:'+dur+'s;--cpdelay:'+dly+'s;--tx:'+tx+'px;--ty:'+ty+'px';
+      container.appendChild(el);
+    }
+  }
+
+  celebClose.addEventListener('click', closeCelebration);
+  celebBackdrop.addEventListener('click', function(e){
+    if(e.target === celebBackdrop) closeCelebration();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && celebBackdrop.classList.contains('open')) closeCelebration();
+    // Secret test hotkey: Ctrl+Alt+W force-previews the completionist celebration
+    // (does NOT set the "already celebrated" flag, so the real trigger still fires later)
+    if(e.ctrlKey && e.altKey && (e.key === 'w' || e.key === 'W')){
+      e.preventDefault();
+      if(!celebBackdrop.classList.contains('open')) openCelebration(true);
+    }
+  });
+
+  // Dev helper: open browser console and call __resetCompletionist() to test
+  window.__resetCompletionist = function(){
+    localStorage.removeItem(LS_VIEWED);
+    localStorage.removeItem(LS_CELEB);
+    viewedSet.clear();
+    pendingCeleb = false;
+    console.log('[showcase] Completionist progress reset. Reload the page to start fresh.');
+  };
+})();
+
+/* ---- TRON light-cycle arena (runs inside #celeb-backdrop canvas while celebration is open) ---- */
+(function(){
+  var canvas = document.getElementById('celeb-tron');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  var CELL = 24;          // grid cell size in CSS px
+  var TRAIL_MAX = 90;     // max trail cells per cycle before oldest is erased
+  var TICK_MS = [82, 97, 71]; // per-cycle step interval (ms) — slightly different speeds
+  var RECKLESS = 0.11;    // per-tick chance an AI cycle plows straight into danger instead of avoiding
+  var PLAYER_IDX = 0;     // cyan cycle is the one the user takes over
+
+  // Cycle colours: cyan, amber, violet
+  var COLORS = [
+    [63,  240, 255],
+    [255, 194,  75],
+    [183, 148, 255]
+  ];
+
+  var COLS = 1, ROWS = 1, DPR = 1;
+  var grid = {};       // key="col,row" → cycle index (0/1/2)
+  var cycles = [];     // one entry per cycle
+  var explodeGroups = [];
+  var running = false;
+  var rafId = null;
+  var lastTime = 0;
+
+  // Player takeover + scoreboard state
+  var playerActive = false;     // becomes true on first arrow/WASD press
+  var playerNextDir = null;     // queued {dx,dy} from keyboard
+  var wins = 0, losses = 0;
+  var SCORE_KEY = 'ps_tron_score';
+  var hud = null;               // scoreboard DOM element
+  var paused = false;           // milestone overlay freezes the sim
+  var milestoneEl = null;       // win/lose overlay DOM element
+  var wallCells = [];           // grid keys occupied by the modal box (permanent walls)
+  // Same endpoint constant the feedback survey uses (separate IIFE scope)
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4hiSjIGivNSqggeaqNCS5d4xCd2zvYdzJPl_xvToLP8wEiyULa7-eEM7r2caJj653yA/exec';
+
+  // Deterministic pseudo-random (Math.random may be unavailable in some sandboxes)
+  var rngSeed = 0x2f6e2b1;
+  function srand(){
+    rngSeed = (rngSeed * 1103515245 + 12345) & 0x7fffffff;
+    return rngSeed / 0x7fffffff;
+  }
+
+  function gk(cx, cy){ return cx + ',' + cy; }
+
+  function isBlocked(cx, cy){
+    return cx < 0 || cy < 0 || cx >= COLS || cy >= ROWS || grid[gk(cx,cy)] !== undefined;
+  }
+
+  function randomFreeCell(){
+    for(var i = 0; i < 300; i++){
+      var cx = (Math.random() * COLS) | 0;
+      var cy = (Math.random() * ROWS) | 0;
+      if(!isBlocked(cx, cy)) return {x:cx, y:cy};
+    }
+    // fallback: linear scan
+    for(var gx = 0; gx < COLS; gx++)
+      for(var gy = 0; gy < ROWS; gy++)
+        if(!isBlocked(gx, gy)) return {x:gx, y:gy};
+    return {x:0, y:0};
+  }
+
+  // Mark the grid cells overlapping the modal box as permanent walls so cycles
+  // crash into / route around the "Completionist" box. Recomputed on resize.
+  function markWalls(){
+    // Clear previous wall cells
+    for(var i = 0; i < wallCells.length; i++){
+      if(grid[wallCells[i]] === 'wall') delete grid[wallCells[i]];
+    }
+    wallCells = [];
+    var modal = document.getElementById('celeb-modal');
+    var cv = canvas.getBoundingClientRect();
+    if(!modal || !cv.width) return;
+    var r = modal.getBoundingClientRect();
+    if(!r.width || !r.height) return;
+    var pad = CELL; // slight padding around the box
+    var c0 = Math.floor((r.left   - cv.left - pad) / CELL);
+    var c1 = Math.ceil ((r.right  - cv.left + pad) / CELL);
+    var r0 = Math.floor((r.top    - cv.top  - pad) / CELL);
+    var r1 = Math.ceil ((r.bottom - cv.top  + pad) / CELL);
+    for(var cx = c0; cx < c1; cx++){
+      for(var cy = r0; cy < r1; cy++){
+        if(cx < 0 || cy < 0 || cx >= COLS || cy >= ROWS) continue;
+        var key = gk(cx, cy);
+        grid[key] = 'wall';
+        wallCells.push(key);
+      }
+    }
+  }
+
+  function spawnCycle(idx){
+    var pos = randomFreeCell();
+    var dirs = [[1,0],[0,1],[-1,0],[0,-1]];
+    var d = dirs[((Math.random() * 4) | 0)];
+    cycles[idx] = { x:pos.x, y:pos.y, dx:d[0], dy:d[1], trail:[], alive:true, regenIn:0, tickAcc:0 };
+    grid[gk(pos.x, pos.y)] = idx;
+    cycles[idx].trail.push({x:pos.x, y:pos.y});
+  }
+
+  // AI turn logic: only looks 1 cell ahead. Prefers straight, then a perpendicular.
+  // Recklessness: sometimes it does NOT take an available avoidance turn and
+  // commits straight into danger, so inter-bike crashes happen every few seconds.
+  // Returns true if a heading was chosen to advance into; the caller re-checks the
+  // target cell and explodes if it is blocked (this is where a crash actually lands).
+  function tryTurn(c){
+    var nx = c.x + c.dx, ny = c.y + c.dy;
+    if(!isBlocked(nx, ny)) return true; // straight ahead is clear — keep going
+
+    // Straight is blocked. Sometimes plow ahead anyway (= crash) instead of dodging.
+    if(srand() < RECKLESS) return true; // commit straight into the blocked cell
+
+    // Otherwise try to dodge into a perpendicular.
+    var p1x = -c.dy, p1y =  c.dx;
+    var p2x =  c.dy, p2y = -c.dx;
+    if(srand() < 0.5){ var t; t=p1x;p1x=p2x;p2x=t; t=p1y;p1y=p2y;p2y=t; }
+    if(!isBlocked(c.x+p1x, c.y+p1y)){ c.dx=p1x; c.dy=p1y; return true; }
+    if(!isBlocked(c.x+p2x, c.y+p2y)){ c.dx=p2x; c.dy=p2y; return true; }
+    return false; // boxed in — nothing free
+  }
+
+  function explodeCycle(idx){
+    var c = cycles[idx];
+    if(!c || !c.alive) return;
+    c.alive = false;
+
+    // Scoreboard: only counts once the player has taken over.
+    if(playerActive){
+      if(idx === PLAYER_IDX){
+        losses++; saveScore(); updateHud(); checkMilestones();
+      } else {
+        var pc = cycles[PLAYER_IDX];
+        if(pc && pc.alive){ wins++; saveScore(); updateHud(); checkMilestones(); }
+      }
+    }
+
+    // Spawn particle burst
+    var col = COLORS[idx];
+    var ex = (c.x + 0.5) * CELL, ey = (c.y + 0.5) * CELL;
+    var parts = [];
+    for(var i = 0; i < 22; i++){
+      var angle = (Math.PI * 2 * i / 22) + (Math.random() * 0.35 - 0.17);
+      var spd   = 45 + Math.random() * 95;
+      parts.push({
+        x:ex, y:ey,
+        vx:Math.cos(angle)*spd, vy:Math.sin(angle)*spd,
+        size:1.5 + Math.random() * 2.5,
+        life:1.0,
+        decay:0.85 + Math.random() * 0.65,
+        col:col
+      });
+    }
+    explodeGroups.push(parts);
+    // Free the cycle's trail cells from the shared grid
+    for(var j = 0; j < c.trail.length; j++){
+      var k = gk(c.trail[j].x, c.trail[j].y);
+      if(grid[k] === idx) delete grid[k];
+    }
+    c.trail = [];
+    c.regenIn = 1200 + Math.random() * 600; // ms before respawn
+  }
+
+  function tickCycle(idx, dt){
+    var c = cycles[idx];
+    if(!c) return;
+    if(!c.alive){
+      c.regenIn -= dt * 1000;
+      if(c.regenIn <= 0) spawnCycle(idx);
+      return;
+    }
+    c.tickAcc += dt * 1000;
+    if(c.tickAcc < TICK_MS[idx]) return;
+    c.tickAcc -= TICK_MS[idx];
+
+    if(playerActive && idx === PLAYER_IDX){
+      // Player-controlled: apply queued direction unless it's an instant 180 reverse.
+      if(playerNextDir && !(playerNextDir.dx === -c.dx && playerNextDir.dy === -c.dy)){
+        c.dx = playerNextDir.dx; c.dy = playerNextDir.dy;
+      }
+      // No AI dodging — player drives straight into whatever is ahead.
+    } else {
+      if(!tryTurn(c)){ explodeCycle(idx); return; }
+    }
+
+    var nx = c.x + c.dx, ny = c.y + c.dy;
+    if(isBlocked(nx, ny)){ explodeCycle(idx); return; } // crash lands here
+
+    c.x = nx; c.y = ny;
+    c.trail.push({x:c.x, y:c.y});
+    grid[gk(c.x, c.y)] = idx;
+
+    // Trim oldest trail cell when cap exceeded
+    if(c.trail.length > TRAIL_MAX){
+      var old = c.trail.shift();
+      var ok = gk(old.x, old.y);
+      if(grid[ok] === idx) delete grid[ok];
+    }
+  }
+
+  function drawFrame(dt){
+    var w = canvas.offsetWidth  || 0;
+    var h = canvas.offsetHeight || 0;
+    ctx.clearRect(0, 0, w, h);
+
+    for(var i = 0; i < 3; i++){
+      var c = cycles[i];
+      if(!c || c.trail.length < 2) continue;
+      var col = COLORS[i];
+      var cs  = col[0]+','+col[1]+','+col[2];
+
+      // Dim full-trail pass
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba('+cs+',0.28)';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'square';
+      ctx.moveTo((c.trail[0].x+0.5)*CELL, (c.trail[0].y+0.5)*CELL);
+      for(var j = 1; j < c.trail.length; j++)
+        ctx.lineTo((c.trail[j].x+0.5)*CELL, (c.trail[j].y+0.5)*CELL);
+      ctx.stroke();
+
+      // Bright recent segment (last ~10 cells) — kept short for perf
+      var rs = Math.max(0, c.trail.length - 10);
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba('+cs+',0.72)';
+      ctx.lineWidth = 2.5;
+      ctx.moveTo((c.trail[rs].x+0.5)*CELL, (c.trail[rs].y+0.5)*CELL);
+      for(var k = rs+1; k < c.trail.length; k++)
+        ctx.lineTo((c.trail[k].x+0.5)*CELL, (c.trail[k].y+0.5)*CELL);
+      ctx.stroke();
+
+      // Head: small crisp glowing dot (no per-cell shadowBlur — a dim larger
+      // circle behind the bright one fakes the glow cheaply).
+      if(c.alive){
+        var hx = (c.x + 0.5) * CELL, hy = (c.y + 0.5) * CELL;
+        var isPlayer = playerActive && i === PLAYER_IDX;
+        // soft glow halo — the player's cycle glows BRIGHTER (same size dot as the AI)
+        ctx.fillStyle = 'rgba('+cs+',' + (isPlayer ? 0.45 : 0.22) + ')';
+        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.45, 0, 6.283); ctx.fill();
+        if(isPlayer){                            // extra inner glow for the player (brightness only)
+          ctx.fillStyle = 'rgba('+cs+',0.38)';
+          ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.33, 0, 6.283); ctx.fill();
+        }
+        ctx.fillStyle = 'rgba('+cs+',1)';        // crisp core dot (same 0.28x for everyone)
+        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.28, 0, 6.283); ctx.fill();
+      }
+    }
+
+    // Explosion particles
+    for(var ep = explodeGroups.length-1; ep >= 0; ep--){
+      var grp  = explodeGroups[ep];
+      var live = false;
+      for(var pp = 0; pp < grp.length; pp++){
+        var p = grp[pp];
+        p.x   += p.vx * dt;
+        p.y   += p.vy * dt;
+        p.vx  *= 0.91;
+        p.vy  *= 0.91;
+        p.life -= p.decay * dt;
+        if(p.life > 0){
+          live = true;
+          var pc = p.col;
+          ctx.globalAlpha = Math.min(1, p.life);
+          ctx.fillStyle   = 'rgb('+pc[0]+','+pc[1]+','+pc[2]+')';
+          ctx.fillRect(p.x - p.size*0.5, p.y - p.size*0.5, p.size, p.size);
+        }
+      }
+      ctx.globalAlpha = 1;
+      if(!live) explodeGroups.splice(ep, 1);
+    }
+  }
+
+  // ---- Scoreboard persistence + HUD ----
+  function loadScore(){
+    wins = 0; losses = 0;
+    try{
+      var raw = JSON.parse(localStorage.getItem(SCORE_KEY) || '{}');
+      wins   = raw.w | 0;
+      losses = raw.l | 0;
+    }catch(e){}
+  }
+  function saveScore(){
+    try{ localStorage.setItem(SCORE_KEY, JSON.stringify({w:wins, l:losses})); }catch(e){}
+  }
+  function ensureHud(){
+    if(hud) return;
+    var backdrop = document.getElementById('celeb-backdrop');
+    if(!backdrop) return;
+    hud = document.createElement('div');
+    hud.id = 'celeb-tron-hud';
+    hud.style.cssText =
+      'position:absolute;top:16px;left:18px;z-index:2;pointer-events:none;' +
+      'font:600 12px/1.3 "Segoe UI",sans-serif;letter-spacing:.14em;' +
+      'text-transform:uppercase;color:#3ff0ff;display:none;' +
+      'padding:6px 12px;border:1px solid rgba(63,240,255,.5);border-radius:8px;' +
+      'background:rgba(0,8,12,.6);text-shadow:0 0 8px rgba(63,240,255,.7);' +
+      'box-shadow:0 0 14px rgba(63,240,255,.25)';
+    backdrop.appendChild(hud);
+  }
+  function updateHud(){
+    if(!hud) return;
+    hud.style.display = playerActive ? 'block' : 'none';
+    hud.textContent = 'Wins: ' + wins + ' · Losses: ' + losses;
+  }
+
+  // ---- Win/Lose milestone overlays ----
+  function hideMilestone(){
+    if(milestoneEl && milestoneEl.parentNode){ milestoneEl.parentNode.removeChild(milestoneEl); }
+    milestoneEl = null;
+  }
+  function buildOverlay(accent){
+    hideMilestone();
+    var backdrop = document.getElementById('celeb-backdrop');
+    if(!backdrop) return null;
+    var el = document.createElement('div');
+    el.style.cssText =
+      'position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;' +
+      'padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);';
+    var box = document.createElement('div');
+    box.style.cssText =
+      'position:relative;width:100%;max-width:460px;text-align:center;' +
+      'background:linear-gradient(160deg,rgba(4,8,14,.98),rgba(0,0,0,.99));' +
+      'border:2px solid '+accent+';border-radius:20px;padding:34px 30px;' +
+      'box-shadow:0 0 0 1px '+accent+' inset,0 0 60px '+accent+',0 0 160px rgba(0,0,0,.9);' +
+      'font-family:"Segoe UI",sans-serif;color:#dfeaf2;';
+    el.appendChild(box);
+    backdrop.appendChild(el);
+    milestoneEl = el;
+    return box;
+  }
+  function showWinner(){
+    paused = true;
+    var accent = 'rgba(63,240,255,.7)';
+    var box = buildOverlay(accent);
+    if(!box){ paused = false; return; }
+    box.innerHTML =
+      '<div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#3ff0ff;opacity:.85;margin-bottom:14px">10 Wins</div>' +
+      '<p style="font-size:18px;line-height:1.5;color:#fff;margin-bottom:6px;font-style:italic">&ldquo;Tron: I fight for the Users.&rdquo;</p>' +
+      '<p style="font-size:12.5px;color:#8aa0b0;margin:14px auto 18px;max-width:340px">Leave your details and we&rsquo;ll be in touch.</p>';
+    var form = document.createElement('div');
+    form.style.cssText = 'display:flex;flex-direction:column;gap:9px;max-width:300px;margin:0 auto;';
+    function mkInput(ph, type){
+      var inp = document.createElement('input');
+      inp.type = type; inp.placeholder = ph;
+      inp.style.cssText =
+        'padding:9px 12px;border-radius:8px;border:1px solid rgba(63,240,255,.4);' +
+        'background:rgba(63,240,255,.05);color:#dfeaf2;font-size:13px;font-family:inherit;outline:none;';
+      return inp;
+    }
+    var nameI  = mkInput('Name', 'text');
+    var emailI = mkInput('Email', 'email');
+    var phoneI = mkInput('Phone', 'tel');
+    form.appendChild(nameI); form.appendChild(emailI); form.appendChild(phoneI);
+    var submit = document.createElement('button');
+    submit.textContent = 'Submit';
+    submit.style.cssText =
+      'margin-top:6px;padding:10px 22px;border-radius:20px;cursor:pointer;font-family:inherit;' +
+      'font-size:13px;letter-spacing:.06em;border:1px solid #3ff0ff;color:#021014;' +
+      'background:linear-gradient(90deg,#3ff0ff,#9fefff);font-weight:600;';
+    form.appendChild(submit);
+    box.appendChild(form);
+
+    function finishAndResume(){
+      wins = 0; saveScore(); updateHud();   // reset wins, keep losses
+      hideMilestone();
+      paused = false;
+    }
+    submit.addEventListener('click', function(){
+      var payload = JSON.stringify({
+        type:'tron_winner',
+        name: nameI.value, email: emailI.value, phone: phoneI.value
+      });
+      try{
+        fetch(SCRIPT_URL, {
+          method:'POST', mode:'no-cors',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: payload
+        }).catch(function(){});
+      }catch(e){}
+      box.innerHTML =
+        '<div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#3ff0ff;opacity:.85;margin-bottom:14px">Thank You</div>' +
+        '<p style="font-size:15px;line-height:1.5;color:#fff;margin-bottom:20px">Thanks &mdash; end of line.</p>';
+      var cont = document.createElement('button');
+      cont.textContent = 'Continue';
+      cont.style.cssText = submit.style.cssText;
+      box.appendChild(cont);
+      cont.addEventListener('click', finishAndResume);
+    });
+
+    // Close (×) also resets wins and resumes
+    var close = document.createElement('button');
+    close.innerHTML = '&times;';
+    close.setAttribute('aria-label','Close');
+    close.style.cssText =
+      'position:absolute;top:12px;right:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;' +
+      'border:1px solid rgba(63,240,255,.4);background:rgba(255,255,255,.04);color:#8aa0b0;font-size:18px;line-height:1;';
+    close.addEventListener('click', finishAndResume);
+    box.appendChild(close);
+  }
+  function showLoser(){
+    paused = true;
+    var accent = 'rgba(255,120,60,.7)';
+    var box = buildOverlay(accent);
+    if(!box){ paused = false; return; }
+    box.innerHTML =
+      '<div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#ff8a3c;opacity:.9;margin-bottom:14px">10 Losses</div>' +
+      '<p style="font-size:16px;line-height:1.55;color:#fff;margin-bottom:22px;font-style:italic">&ldquo;Clu: I took this system to its maximum potential. I created the perfect system!&rdquo;</p>';
+    var btn = document.createElement('button');
+    btn.textContent = 'Reset & Try Again';
+    btn.style.cssText =
+      'padding:10px 24px;border-radius:20px;cursor:pointer;font-family:inherit;font-size:13px;' +
+      'letter-spacing:.06em;font-weight:600;border:1px solid #ff8a3c;color:#140802;' +
+      'background:linear-gradient(90deg,#ff8a3c,#ffc24b);';
+    box.appendChild(btn);
+    btn.addEventListener('click', function(){
+      wins = 0; losses = 0; saveScore();   // zero both
+      hideMilestone();
+      initRound();                          // back to attract mode
+    });
+  }
+  function checkMilestones(){
+    if(wins >= 10){ showWinner(); }
+    else if(losses >= 10){ showLoser(); }
+  }
+
+  // ---- Player keyboard takeover ----
+  function setPlayerDir(dx, dy){
+    if(!running) return;
+    if(!playerActive){ playerActive = true; updateHud(); }
+    playerNextDir = {dx:dx, dy:dy};
+  }
+  function onKey(e){
+    if(!running) return;
+    // Ignore any modified keypress so the Ctrl+Alt+W open hotkey (and other
+    // shortcuts) never trigger takeover — only PLAIN arrows / WASD count.
+    if(e.ctrlKey || e.altKey || e.metaKey) return;
+    if(paused) return; // milestone overlay is up — ignore driving keys
+    var k = e.key;
+    if(k === 'ArrowUp'    || k === 'w' || k === 'W'){ setPlayerDir(0,-1); e.preventDefault(); }
+    else if(k === 'ArrowDown'  || k === 's' || k === 'S'){ setPlayerDir(0, 1); e.preventDefault(); }
+    else if(k === 'ArrowLeft'  || k === 'a' || k === 'A'){ setPlayerDir(-1,0); e.preventDefault(); }
+    else if(k === 'ArrowRight' || k === 'd' || k === 'D'){ setPlayerDir(1, 0); e.preventDefault(); }
+  }
+
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var w = canvas.offsetWidth  || 0;
+    var h = canvas.offsetHeight || 0;
+    if(!w || !h) return;
+    canvas.width  = (w * DPR) | 0;
+    canvas.height = (h * DPR) | 0;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    COLS = Math.max(1, (w / CELL) | 0);
+    ROWS = Math.max(1, (h / CELL) | 0);
+    markWalls();   // modal box → permanent wall cells
+  }
+
+  function loop(ts){
+    if(!running) return;
+    var dt = Math.min((ts - lastTime) / 1000, 0.12);
+    lastTime = ts;
+    if(!paused){
+      for(var i = 0; i < 3; i++) tickCycle(i, dt);
+    }
+    drawFrame(dt);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // (Re)initialise a fresh round: clear grid/cycles, attract mode, mark walls, spawn.
+  function initRound(){
+    grid = {}; wallCells = []; cycles = [null,null,null]; explodeGroups = [];
+    playerActive = false; playerNextDir = null;   // attract mode (all AI)
+    paused = false;
+    resize();                       // sets COLS/ROWS + marks walls
+    for(var i = 0; i < 3; i++) spawnCycle(i);
+    updateHud();
+  }
+
+  function start(){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if(running) stop();
+    loadScore();
+    ensureHud();
+    hideMilestone();
+    initRound();
+    running  = true;
+    lastTime = performance.now();
+    rafId    = requestAnimationFrame(loop);
+    window.addEventListener('resize', resize);
+    window.addEventListener('keydown', onKey);
+    // Modal pops in over ~0.42s; recompute walls once it has settled at full size.
+    setTimeout(function(){ if(running) markWalls(); }, 500);
+  }
+
+  function stop(){
+    running = false;
+    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+    grid = {}; wallCells = []; cycles = []; explodeGroups = [];
+    playerActive = false; playerNextDir = null; paused = false;
+    hideMilestone();
+    if(hud) hud.style.display = 'none';
+    var w = canvas.offsetWidth || 0, h = canvas.offsetHeight || 0;
+    if(w && h) ctx.clearRect(0, 0, w, h);
+    window.removeEventListener('resize', resize);
+    window.removeEventListener('keydown', onKey);   // keys do nothing when closed
+  }
+
+  window.__celebTron = {start:start, stop:stop};
+})();
+
+/* ---- Feature 2: Feedback survey ---- */
+(function(){
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4hiSjIGivNSqggeaqNCS5d4xCd2zvYdzJPl_xvToLP8wEiyULa7-eEM7r2caJj653yA/exec';
+  var _jsonpN = 0;
+
+  /* ---- Average-stars footer widget ---- */
+  function updateAvgDisplay(data){
+    var fill  = document.getElementById('fb-avg-fill');
+    var label = document.getElementById('fb-avg-label');
+    if(!fill || !label) return;
+    if(!data || !data.count){
+      fill.style.width = '0%';
+      label.textContent = 'No ratings yet';
+      return;
+    }
+    var pct = (data.overall / 5) * 100;
+    fill.style.width = pct.toFixed(1) + '%';
+    label.textContent = data.overall.toFixed(1) + ' / 5 · ' + data.count + (data.count === 1 ? ' rating' : ' ratings');
+  }
+
+  window.__fbAverages = function(data){
+    updateAvgDisplay(data);
+  };
+
+  function loadFbAverages(){
+    _jsonpN++;
+    var s = document.createElement('script');
+    s.src = SCRIPT_URL + '?callback=__fbAverages&_n=' + _jsonpN;
+    s.onerror = function(){ updateAvgDisplay(null); };
+    document.head.appendChild(s);
+  }
+
+  // Fetch averages on page load
+  loadFbAverages();
+
+  /* ---- Modal open/close ---- */
+  var fbBackdrop = document.getElementById('fb-backdrop');
+  var fbClose    = document.getElementById('fb-close');
+  var fbBtn      = document.getElementById('feedback-btn');
+  var fbSubmit   = document.getElementById('fb-submit');
+  var fbThankyou = document.getElementById('fb-thankyou');
+  var fbForm     = document.getElementById('fb-form');
+  var fbComments = document.getElementById('fb-comments');
+
+  // ratings state: section key -> 0 (unset) or 1..5
+  var ratings = {};
+
+  function openFeedback(){
+    fbBackdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeFeedback(){
+    fbBackdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    // restore form view after transition
+    setTimeout(function(){
+      fbThankyou.style.display = 'none';
+      fbForm.style.display = '';
+    }, 420);
+  }
+
+  // Wire up each star row
+  fbBackdrop.querySelectorAll('.star-row').forEach(function(row){
+    var section = row.dataset.section;
+    ratings[section] = 0;
+    var btns = row.querySelectorAll('.stars-widget button');
+    btns.forEach(function(btn){
+      btn.addEventListener('mouseenter', function(){
+        var v = +btn.dataset.v;
+        btns.forEach(function(b){ b.classList.toggle('lit', +b.dataset.v <= v); });
+      });
+      btn.addEventListener('mouseleave', function(){
+        var cur = ratings[section] || 0;
+        btns.forEach(function(b){ b.classList.toggle('lit', +b.dataset.v <= cur); });
+      });
+      btn.addEventListener('click', function(){
+        ratings[section] = +btn.dataset.v;
+        btns.forEach(function(b){ b.classList.toggle('lit', +b.dataset.v <= ratings[section]); });
+      });
+    });
+  });
+
+  // Submit: POST ratings JSON to Apps Script, no mailto
+  fbSubmit.addEventListener('click', function(){
+    var ratingPayload = {};
+    fbBackdrop.querySelectorAll('.star-row').forEach(function(row){
+      var sec = row.dataset.section;
+      var r = ratings[sec] || 0;
+      if(r) ratingPayload[sec] = r;
+    });
+    var payload = { ratings: ratingPayload, comments: fbComments.value.trim() };
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+    fbForm.style.display = 'none';
+    fbThankyou.style.display = '';
+    // Refresh the footer average after a brief delay (sheet write latency)
+    setTimeout(loadFbAverages, 1500);
+  });
+
+  fbBtn.addEventListener('click', openFeedback);
+  fbClose.addEventListener('click', closeFeedback);
+  fbBackdrop.addEventListener('click', function(e){
+    if(e.target === fbBackdrop) closeFeedback();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && fbBackdrop.classList.contains('open')) closeFeedback();
+  });
+})();
+</script>
+</body>
+</html>
