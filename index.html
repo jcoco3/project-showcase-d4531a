@@ -380,6 +380,14 @@
     display:block;font-size:11px;color:var(--txt-dim);opacity:.5;
     margin-top:9px;letter-spacing:.04em;line-height:1.4;
   }
+  /* Mobile: shrink the celebration box so the light-cycle arena has room to run
+     around it (the modal is a wall; markWalls recomputes to this smaller size). */
+  @media(max-width:620px){
+    .celeb-modal{max-width:86vw;padding:26px 22px 28px;border-radius:18px}
+    .celeb-icon{font-size:46px;margin-bottom:12px}
+    .celeb-modal h2{font-size:clamp(20px,7vw,28px)}
+    .celeb-modal .celeb-body{font-size:12px;max-width:300px;margin-bottom:18px}
+  }
 
   /* ---- TRON light-cycle canvas (celebration backdrop, sits at z-index:0 behind modal) ---- */
   #celeb-tron{
@@ -1354,7 +1362,8 @@ document.addEventListener('keydown',e=>{
 
   var CELL = 24;          // grid cell size in CSS px
   var TRAIL_MAX = 90;     // max trail cells per cycle before oldest is erased
-  var TICK_MS = [82, 97, 71]; // per-cycle step interval (ms) — slightly different speeds
+  var TICK_MS = [82, 97, 71]; // per-cycle base step interval (ms) — slightly different speeds
+  var speedScale = 1;         // <1 on small screens → larger effective tick → slower cycles
   var RECKLESS = 0.11;    // per-tick chance an AI cycle plows straight into danger instead of avoiding
   var PLAYER_IDX = 0;     // cyan cycle is the one the user takes over
 
@@ -1382,12 +1391,9 @@ document.addEventListener('keydown',e=>{
   var paused = false;           // milestone overlay freezes the sim
   var milestoneEl = null;       // win/lose overlay DOM element
   var wallCells = [];           // grid keys occupied by the modal box (permanent walls)
-  var hintEl = null;            // attract-mode "swipe/press to drive" hint
   // Touch / swipe steering
   var SWIPE_THRESH = 24;        // min px on dominant axis to count as a swipe (vs a tap)
   var touchStartX = 0, touchStartY = 0, touchTracking = false;
-  var IS_TOUCH = ('ontouchstart' in window) ||
-                 (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
   // Same endpoint constant the feedback survey uses (separate IIFE scope)
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4hiSjIGivNSqggeaqNCS5d4xCd2zvYdzJPl_xvToLP8wEiyULa7-eEM7r2caJj653yA/exec';
 
@@ -1524,9 +1530,11 @@ document.addEventListener('keydown',e=>{
       if(c.regenIn <= 0) spawnCycle(idx);
       return;
     }
+    // Smaller screens → smaller speedScale → larger effective tick → slower on-screen pace
+    var tickMs = TICK_MS[idx] / speedScale;
     c.tickAcc += dt * 1000;
-    if(c.tickAcc < TICK_MS[idx]) return;
-    c.tickAcc -= TICK_MS[idx];
+    if(c.tickAcc < tickMs) return;
+    c.tickAcc -= tickMs;
 
     if(playerActive && idx === PLAYER_IDX){
       // Player-controlled: apply queued direction unless it's an instant 180 reverse.
@@ -1648,7 +1656,6 @@ document.addEventListener('keydown',e=>{
     backdrop.appendChild(hud);
   }
   function updateHud(){
-    updateHint();
     if(!hud) return;
     hud.style.display = playerActive ? 'block' : 'none';
     hud.textContent = 'Wins: ' + wins + ' · Losses: ' + losses;
@@ -1820,28 +1827,6 @@ document.addEventListener('keydown',e=>{
     else         setPlayerDir(0, dy < 0 ? -1 : 1);   // vertical swipe
   }
 
-  // ---- Attract-mode hint ("swipe to drive" / "press an arrow") ----
-  function ensureHint(){
-    if(hintEl) return;
-    var backdrop = document.getElementById('celeb-backdrop');
-    if(!backdrop) return;
-    hintEl = document.createElement('div');
-    hintEl.id = 'celeb-tron-hint';
-    hintEl.style.cssText =
-      'position:absolute;top:54px;left:18px;z-index:2;pointer-events:none;' +
-      'font:600 10.5px/1.3 "Segoe UI",sans-serif;letter-spacing:.12em;' +
-      'text-transform:uppercase;color:#3ff0ff;opacity:.7;display:none;' +
-      'padding:4px 10px;border:1px solid rgba(63,240,255,.32);border-radius:7px;' +
-      'background:rgba(0,8,12,.5);text-shadow:0 0 6px rgba(63,240,255,.6)';
-    hintEl.textContent = IS_TOUCH ? 'Swipe to drive' : 'Press an arrow key to drive';
-    backdrop.appendChild(hintEl);
-  }
-  function updateHint(){
-    if(!hintEl) return;
-    // Visible only in attract mode (before takeover) while the sim runs.
-    hintEl.style.display = (running && !playerActive && !paused) ? 'block' : 'none';
-  }
-
   function resize(){
     DPR = Math.min(window.devicePixelRatio || 1, 2);
     var w = canvas.offsetWidth  || 0;
@@ -1852,6 +1837,9 @@ document.addEventListener('keydown',e=>{
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     COLS = Math.max(1, (w / CELL) | 0);
     ROWS = Math.max(1, (h / CELL) | 0);
+    // Scale traversal pace by the smaller viewport dimension so phones aren't frantic.
+    var minDim = Math.min(window.innerWidth || w, window.innerHeight || h);
+    speedScale = Math.max(0.45, Math.min(1, minDim / 900));
     markWalls();   // modal box → permanent wall cells
   }
 
@@ -1881,7 +1869,6 @@ document.addEventListener('keydown',e=>{
     if(running) stop();
     loadScore();
     ensureHud();
-    ensureHint();
     hideMilestone();
     running  = true;
     initRound();
@@ -1909,7 +1896,6 @@ document.addEventListener('keydown',e=>{
     touchTracking = false;
     hideMilestone();
     if(hud) hud.style.display = 'none';
-    if(hintEl) hintEl.style.display = 'none';
     var w = canvas.offsetWidth || 0, h = canvas.offsetHeight || 0;
     if(w && h) ctx.clearRect(0, 0, w, h);
     window.removeEventListener('resize', resize);
