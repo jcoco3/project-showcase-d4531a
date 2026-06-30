@@ -1239,10 +1239,14 @@ document.addEventListener('keydown',e=>{
     var key = p.name;
     if(!viewedSet.has(key)){
       viewedSet.add(key);
-      try{ localStorage.setItem(LS_VIEWED, JSON.stringify([].concat(Array.from(viewedSet)))); }catch(e){}
-      if(viewedSet.size >= PROJECTS.length && !localStorage.getItem(LS_CELEB)){
-        pendingCeleb = true;
-      }
+      try{ localStorage.setItem(LS_VIEWED, JSON.stringify(Array.from(viewedSet))); }catch(e){}
+    }
+    // Re-check completion on EVERY open (not only new adds), and count only
+    // CURRENT projects so a stale/removed-card entry can't block or skew it.
+    var seen = 0;
+    for(var pi = 0; pi < PROJECTS.length; pi++){ if(viewedSet.has(PROJECTS[pi].name)) seen++; }
+    if(seen >= PROJECTS.length && !localStorage.getItem(LS_CELEB)){
+      pendingCeleb = true;
     }
   };
 

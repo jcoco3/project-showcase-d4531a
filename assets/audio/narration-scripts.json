@@ -67,22 +67,22 @@
       "Qt": "Q T",
       "UI": "U I",
       "CT": "C T",
-      "AI": "Ay I",
+      "AI": "A I",
       "orb": "ohrb",
       "Pi": "Pie"
     }
   },
   "intro": {
     "display": "Welcome to Jonathan Coco's project showcase — a collection of real, field-tested work spanning geospatial processing, LiDAR tooling, QGIS plugin development, drone surveying, and AI integration. Use the filter chips at the top to browse by category, or scroll through everything. Click any project card to hear a quick rundown of what it does. Let's get into it.",
-    "tts": "Welcome to Jonathan Coco's project showcase — a collection of real, field-tested work spanning geospatial processing, Lie-dar tooling, Q G I S plugin development, drone surveying, and Ay I integration. Use the filter chips at the top to browse by category, or scroll through everything. Click any project card to hear a quick rundown of what it does. Let us get into it."
+    "tts": "Welcome to Jonathan Coco's project showcase — a collection of real, field-tested work spanning geospatial processing, Lie-dar tooling, Q G I S plugin development, drone surveying, and A I integration. Use the filter chips at the top to browse by category, or scroll through everything. Click any project card to hear a quick rundown of what it does. Let us get into it."
   },
   "voice-control-setup": {
     "display": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local GPU, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background AI sub-agents, and an animated visualizer orb.",
-    "tts": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local G P U, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background Ay I sub-agents, and an animated vizh-oo-a-ly-zer ohrb."
+    "tts": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local G P U, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background A I sub-agents, and an animated vizh-oo-a-ly-zer ohrb."
   },
   "knowledge-llm-wiki": {
     "display": "An AI agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-curate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the AI reads from and writes back to automatically across every project it works in. Thank you, Donovan.",
-    "tts": "An Ay I agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-curate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the Ay I reads from and writes back to automatically across every project it works in. Thank you, Donovan."
+    "tts": "An A I agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-curate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the A I reads from and writes back to automatically across every project it works in. Thank you, Donovan."
   },
   "tree-locator": {
     "display": "Tree Locator, requested by Jeff Diamond, is a QGIS plugin that detects and inventories individual trees from LiDAR point clouds. It runs two detection engines — a raster-based approach and a full 3D point-cloud segmentation — then synthesizes a complete forestry report: trees per acre, basal area, merchantable volume, carbon estimates, fire risk, and canopy analysis. The primary goal is locating the large, beautiful keeper-trees for preliminary planning, while the secondary function works out wood volume between ground elevation and base flood elevation for refined mitigation volumes. Thirty-five tagged releases deep.",
@@ -154,7 +154,7 @@
   },
   "noema": {
     "display": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold AI-generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It's an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him.",
-    "tts": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold Ay I-generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It is an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him."
+    "tts": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold A I-generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It is an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him."
   },
   "rmsez": {
     "display": "RMSez automates the vertical-accuracy quality check required for LiDAR deliverables. It computes RMSz against GPS ground control following ASPRS and USGS standards, handles both raster DEMs and mesh surfaces, detects outliers automatically, and produces a formatted HTML report you can drop straight into a project deliverable. And be sure to check out the full report for a deeper dive.",
@@ -174,7 +174,7 @@
   },
   "tbc-grading-model-tools": {
     "display": "Trimble Business Center is the industry standard for civil grading design, but it has no scripting interface. This project builds a bridge that lets Claude control TBC through a plugin — so you can import survey data, create design surfaces, and build grading models by talking to an AI assistant.",
-    "tts": "Trimble Business Center is the industry standard for civil grading design, but it has no scripting interface. This project builds a bridge that lets Claude control T B C through a plugin — so you can import survey data, create design surfaces, and build grading models by talking to an Ay I assistant."
+    "tts": "Trimble Business Center is the industry standard for civil grading design, but it has no scripting interface. This project builds a bridge that lets Claude control T B C through a plugin — so you can import survey data, create design surfaces, and build grading models by talking to an A I assistant."
   },
   "recon-pixdat-tagger": {
     "display": "Phoenix LiDAR systems capture imagery alongside the point cloud, but the GPS and pose data live in a proprietary file separate from the photos. This tool reads that file and writes the GPS coordinates and camera orientation directly into the EXIF tags of each image, making the imagery immediately usable in photogrammetry workflows.",
