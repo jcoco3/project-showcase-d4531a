@@ -386,14 +386,14 @@
   /* Mobile: shrink the celebration box so the light-cycle arena has room to run
      around it (the modal is a wall; markWalls recomputes to this smaller size). */
   @media(max-width:620px){
-    .celeb-backdrop{padding:16px 10px}
-    .celeb-modal{max-width:250px;padding:16px 16px 18px;border-radius:14px}
-    .celeb-modal .m-close{width:26px;height:26px;font-size:15px;top:8px;right:9px}
-    .celeb-icon{font-size:30px;margin-bottom:7px}
-    .celeb-modal h2{font-size:clamp(15px,5vw,19px);margin-bottom:5px}
-    .celeb-modal .celeb-body{font-size:10px;line-height:1.45;max-width:200px;margin:0 auto 12px}
-    .celeb-modal .report-link{font-size:11px;padding:5px 12px;margin-top:8px}
-    .celeb-credit{font-size:9px;margin-top:6px}
+    .celeb-backdrop{padding:12px 8px}
+    .celeb-modal{max-width:165px;padding:11px 11px 13px;border-radius:11px}
+    .celeb-modal .m-close{width:21px;height:21px;font-size:12px;top:5px;right:6px}
+    .celeb-icon{font-size:23px;margin-bottom:4px}
+    .celeb-modal h2{font-size:clamp(13px,4vw,16px);margin-bottom:3px}
+    .celeb-modal .celeb-body{font-size:8.5px;line-height:1.4;max-width:140px;margin:0 auto 9px}
+    .celeb-modal .report-link{font-size:9.5px;padding:4px 9px;margin-top:6px;gap:4px}
+    .celeb-credit{font-size:8px;margin-top:5px}
   }
 
   /* ---- TRON light-cycle canvas (celebration backdrop, sits at z-index:0 behind modal) ---- */
@@ -1560,8 +1560,10 @@ document.addEventListener('keydown',e=>{
     c.trail.push({x:c.x, y:c.y});
     grid[gk(c.x, c.y)] = idx;
 
-    // Trim oldest trail cell when cap exceeded
-    if(c.trail.length > TRAIL_MAX){
+    // Trim oldest trail cell when cap exceeded. Scale the cap with speedScale
+    // (same rule as cycle speed) so trails aren't huge relative to a small arena.
+    var trailCap = Math.max(18, Math.round(TRAIL_MAX * speedScale));
+    if(c.trail.length > trailCap){
       var old = c.trail.shift();
       var ok = gk(old.x, old.y);
       if(grid[ok] === idx) delete grid[ok];
