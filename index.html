@@ -270,6 +270,18 @@
   .modal .m-close:hover{color:var(--cat,var(--cyan));border-color:var(--cat,var(--cyan))}
   .modal .m-eyebrow{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--cat,var(--cyan));margin-bottom:6px}
   .modal h2{font-size:clamp(22px,3.4vw,30px);font-weight:700;color:#fff;letter-spacing:.01em;padding-right:40px}
+  /* plugin icon row: sits inline right of the h2 title */
+  .m-title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .m-title-row h2{padding-right:0}
+  .m-plugin-icons{display:flex;gap:6px;align-items:center;flex-shrink:0}
+  .m-plugin-icons img{
+    width:26px;height:26px;object-fit:contain;
+    border:1px solid rgba(63,240,255,.35);border-radius:5px;
+    background:rgba(0,0,0,.45);padding:2px;
+    filter:drop-shadow(0 0 3px rgba(63,240,255,.18));
+    transition:.15s;
+  }
+  .m-plugin-icons img:hover{border-color:var(--cat,var(--cyan));filter:drop-shadow(0 0 6px rgba(63,240,255,.45))}
   .modal .m-tagline{color:var(--txt-dim);font-size:14.5px;margin-top:8px;max-width:680px}
   .modal .m-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
   .modal ul{margin:18px 0 6px}
@@ -651,7 +663,7 @@ const PROJECTS = [
    bullets:["Standalone, version-controlled wiki of durable cross-project conventions, gotchas &amp; reusable patterns","Karpathy append-and-curate method: a catalog index, per-topic wiki pages, and an ingest log","Wired into the global agent config so every project reads from and writes back to it automatically","Seeded from ~38 projects via a parallel agent fleet"],
    tech:["Markdown","Git","Claude","MCP"], shots:["assets/knowledge-llmwiki.svg"]},
 
-  {name:"Tree Locator", cat:"QGIS Plugin", status:"Active", effort:9,
+  {name:"Tree Locator", cat:"QGIS Plugin", status:"Active", effort:9, icons:["assets/icons/tree-locator.svg"],
    tagline:"Individual-tree detection &amp; full forestry analytics from LiDAR.",
    bullets:["Two detection engines: raster CHM local-maxima and treeiso 3D point-cloud segmentation, with consensus matching","Stand inventory: trees/acre, basal area, merchantable volume, carbon/biomass, spatial-pattern statistics","DBH cylinder modeling, fire ladder-fuel risk, canopy ecology, change detection, utility-ROW encroachment","Per-tree 4-view HTML reports, DXF + Leaflet web-map export; 35+ tagged releases (v2.0–v2.35)","Requested by Jeff Diamond for professional-grade forestry inventory and reporting"],
    tech:["Python","QGIS","laspy","PDAL","SciPy","OpenCV","treeiso"],
@@ -663,19 +675,19 @@ const PROJECTS = [
    tech:["Kotlin","Compose","C++17","NDK","FAST-LIO2","MapLibre"],
    shots:["assets/OctoSLAM%20(1).jpg","assets/OctoSLAM%20(2).jpg","assets/OctoSLAM%20(3).jpg","assets/OctoSLAM%20(4).jpg","assets/OctoSLAM%20(5).jpg","assets/OctoSLAM%20(6).jpg"]},
 
-  {name:"LiDAR Orthophoto Generator", cat:"QGIS Plugin", status:"Active", effort:8,
+  {name:"LiDAR Orthophoto Generator", cat:"QGIS Plugin", status:"Active", effort:8, icons:["assets/icons/lidar-orthophoto-generator.png"],
    tagline:"RGB point clouds to gap-free orthophotos.",
    bullets:["LAS/LAZ to 3-band RGB GeoTIFF via PDAL; TIN / highest-Z rasterization with IDW gap fill","Builds a true-color orthophoto straight from the point cloud","Preview-tile mode and chainable post-processing"],
    tech:["Python","QGIS","PDAL","GDAL","ONNX"], seq:true, seqDelay:1000,
    shots:["assets/Lidar_Orthophoto%20(0).png","assets/Lidar_Orthophoto%20(1).png","assets/Lidar_Orthophoto%20(2).png","assets/Lidar_Orthophoto%20(3).png","assets/Lidar_Orthophoto%20(4).png","assets/Lidar_Orthophoto%20(5).png","assets/Lidar_Orthophoto%20(6).png","assets/Lidar_Orthophoto%20(7).png"]},
 
-  {name:"Orthophoto AI Upscale", cat:"QGIS Plugin", status:"Active", effort:8,
+  {name:"Orthophoto AI Upscale", cat:"QGIS Plugin", status:"Active", effort:8, icons:["assets/icons/orthophoto-ai-upscale.png"],
    tagline:"Real-ESRGAN super-resolution: point cloud to crisp orthophoto.",
    bullets:["Real-ESRGAN x4 super-resolution over ONNX + DirectML — GPU upscaling, no CUDA or admin install","Carries the orthophoto from point cloud all the way to a sharp, upscaled image","Live-streamed first-run setup with SHA-256-verified AI model download","Chainable auto-upscale post-process step"],
    tech:["Python","QGIS","ONNX","Real-ESRGAN","DirectML"], seq:true, thumb:"assets/Lidar_OrthophotoAIupscale%205.png",
    shots:["assets/Lidar_OrthophotoAIupscale%201.png","assets/Lidar_OrthophotoAIupscale%202.png","assets/Lidar_OrthophotoAIupscale%203.png","assets/Lidar_OrthophotoAIupscale%204.png","assets/Lidar_OrthophotoAIupscale%205.png"]},
 
-  {name:"Segment Adjust", cat:"QGIS Plugin", status:"Active", effort:8,
+  {name:"Segment Adjust", cat:"QGIS Plugin", status:"Active", effort:8, icons:["assets/icons/segment-adjust.png"],
    tagline:"Per-segment vertical adjustment of LiDAR surfaces.",
    bullets:["Segments a surface by user polygons and solves an optimal vertical shift per segment from GNSS control","Interactive polygon digitizing with snapping + topology validation (gap/overlap detection)","Mean / median / custom shift methods, edge feathering, before/after accuracy tracking","Automatic segmentation routines: watershed/drainage, RGB-based, and geomorphological segmentation","Guided wizard UI with HTML/CSV reporting; integrates with RMSez"],
    tech:["Python","QGIS","GDAL","RMSez"],
@@ -693,33 +705,33 @@ const PROJECTS = [
    tech:["Kotlin","Android","Room","Hilt","Retrofit"],
    shots:["assets/LidarMillUploader%20(1).jpg","assets/LidarMillUploader%20(2).jpg","assets/LidarMillUploader%20(3).jpg","assets/lidarmill-1.jpg"]},
 
-  {name:"Point Cloud Modeler", cat:"QGIS Plugin", status:"WIP", effort:6,
+  {name:"Point Cloud Modeler", cat:"QGIS Plugin", status:"WIP", effort:6, icons:["assets/icons/point-cloud-modeler.svg"],
    tagline:"Parametric steel &amp; piping modeling against point clouds.",
    bullets:["Places parametric structural members (beams, pipes) against LAS/LAZ/COPC/EPT clouds in QGIS","'Fit to Cloud' as-built fitting: axis-fit steel members and circle-fit pipes to the point cross-section, with elevation snap on placement","Exports to IFC (open BIM) via IfcOpenShell; AISC pipe catalog + QGIS-4 mesh 3D renderer and 2D pipe/plate views","Layered architecture: geometry kernel, catalog, rendering, persistence; 145 commits"],
    tech:["Python","QGIS","IfcOpenShell","OpenCASCADE"], shots:[]},
 
-  {name:"PDAL GUI", cat:"QGIS Plugin", status:"Active", effort:6,
+  {name:"PDAL GUI", cat:"QGIS Plugin", status:"Active", effort:6, icons:["assets/icons/pdal-gui.png"],
    tagline:"Point-cloud processing pipelines without the command line.",
    bullets:["Qt dialogs wrap PDAL: classification, tiling, conversion, above-ground clipping, Grid Snap voxel downsample","Auto-detects the PDAL executable, parses metadata, reports CRS/units","Pipeline presets, template management, map-click coordinate picker","Runs async via the QGIS task manager with progress; 92 commits"],
    tech:["Python","PyQt","QGIS","PDAL"],
    shots:["assets/PDAL_GUI1.png","assets/PDAL_GUI2.png","assets/PDAL_GUI3.png","assets/PDAL_GUI4.png"]},
 
-  {name:"Make Cool Maps", cat:"QGIS Plugin", status:"Active", effort:6,
+  {name:"Make Cool Maps", cat:"QGIS Plugin", status:"Active", effort:6, icons:["assets/icons/make-cool-maps.svg"],
    tagline:"One-click cartographic styling for terrain data.",
    bullets:["9 built-in styles: Fancy DTM, Layer Cake, Tanaka contours, texture shading, LRM X-Ray, TPI…","Accepts LAS/LAZ (auto-converts to DTM via PDAL) or GeoTIFF rasters","Per-style tunable parameters via auto-generated widgets; optional 3D extrusion","Extensible — add a style by subclassing MapStyle"],
    tech:["Python","QGIS","PDAL","GDAL"], shots:["assets/MakeCoolMaps.png","assets/MakeCoolMaps2.png","assets/MakeCoolMaps3.png","assets/MakeCoolMaps4.png"]},
 
-  {name:"QGIS Animation Tool", cat:"QGIS Plugin", status:"WIP", effort:4,
+  {name:"QGIS Animation Tool", cat:"QGIS Plugin", status:"WIP", effort:4, icons:["assets/icons/qgis-animation-tool.png"],
    tagline:"Timeline-based animation of maps &amp; layers in QGIS.",
    bullets:["Keyframe-driven animation of layer state, camera and time in QGIS","Exports frame sequences / video for fly-throughs and temporal data","Early build — actively in development, not yet field-tested"],
    tech:["Python","QGIS","PyQGIS"], shots:[]},
 
-  {name:"LandXML Converter", cat:"QGIS Plugin", status:"Active", effort:3,
+  {name:"LandXML Converter", cat:"QGIS Plugin", status:"Active", effort:3, icons:["assets/icons/landxml-converter.svg"],
    tagline:"Imports LandXML surfaces &amp; alignments, with extra exports.",
    bullets:["Heavily modified from an existing converter with added export formats","Brings LandXML TIN surfaces and alignments into QGIS","Small, single-purpose utility for survey/CAD interchange"],
    tech:["Python","QGIS","LandXML"], shots:["assets/landxml-tin.svg"]},
 
-  {name:"3D Toolset", cat:"QGIS Plugin", status:"WIP", effort:6,
+  {name:"3D Toolset", cat:"QGIS Plugin", status:"WIP", effort:6, icons:["assets/icons/3d-toolset.svg"],
    tagline:"CAD-style 3D modeling &amp; point-cloud editing inside QGIS.",
    bullets:["Dockable 3D viewport with 2D/3D sync","Interactive clipping box with draggable grip handles; section-plane cross-section viewer","Full CAD drawing suite: line, arc, circle, polygon, text with snapping","CAD construction tools: offset, trim, fillet + layer manager"],
    tech:["Python","QGIS","PyQGIS","Qt"],
@@ -731,19 +743,19 @@ const PROJECTS = [
    tech:["Python","Raspberry Pi","pyproj","Flask","Bluetooth"],
    shots:["assets/SonarPi%20(0).jpg","assets/SonarPi%20(2).jpg","assets/SonarPi%20(3).jpg","assets/SonarPi%20(4).jpg","assets/SonarPi%20(5).jpg","assets/SonarPi%20(6).jpg","assets/SonarPi%20(7).jpg","assets/SonarPi.jpg","assets/SonarPi.png","assets/SonarPi2.png"]},
 
-  {name:"3D Elevation Profile Digitizer", cat:"QGIS Plugin", status:"Active", effort:5,
+  {name:"3D Elevation Profile Digitizer", cat:"QGIS Plugin", status:"Active", effort:5, icons:["assets/icons/3d-elevation-profile-digitizer.svg"],
    tagline:"Build surfaces by section along a profile — manually or with auto terrain-following.",
    bullets:["Model by Section: build a TIN surface by drawing cross-sections — manually positioned or automatically following the terrain per section","Auto-generate the entire surface along the profile in one pass, placing sections end-to-end","2D and 3D layout outputs for the generated surface","Multiple point-visualization style buttons for profile display; X-ray profile rendering; exports PointZ / LineStringZ; 109 commits"],
    tech:["Python","QGIS","PyQGIS","GeoPackage"],
    shots:["assets/ModelBySection.mp4","assets/ModelbySection.png","assets/ModelbySection1.png"]},
 
-  {name:"X-Ray Cross-Section View", cat:"QGIS Plugin", status:"Active", effort:5,
+  {name:"X-Ray Cross-Section View", cat:"QGIS Plugin", status:"Active", effort:5, icons:["assets/icons/x-ray-cross-section-view.svg"],
    tagline:"See-through point-cloud rendering that mimics a micro-CT scan.",
    bullets:["Renders surfaces and point clouds with X-ray-style transparency to expose internal structure","Mimics the look of a micro-CT cross-section for seeing what's inside a feature","Grew out of the 3D elevation-profile work for slicing through point clouds"],
    tech:["Python","QGIS","PyQGIS"],
    shots:["assets/XRAY1.png","assets/XRAY2.png"]},
 
-  {name:"Drone GNSS Extractor", cat:"QGIS Plugin", status:"Beta", effort:5,
+  {name:"Drone GNSS Extractor", cat:"QGIS Plugin", status:"Beta", effort:5, icons:["assets/icons/drone-gnss-extractor.png"],
    tagline:"DJI RTK drone data to survey-grade coordinates.",
    bullets:["Parses DJI M300/P1 MRK timestamp files and XMP photo tags into RTK points","Clusters and averages redundant fixes per ground point for survey accuracy","Exports PNEZD CSV + permanent GeoPackage layers","CRS validation gate and background QgsTask pipeline; 70 commits"],
    tech:["Python","QGIS","PyQt5","GeoPackage"],
@@ -755,24 +767,24 @@ const PROJECTS = [
    tech:["Next.js","TypeScript","Claude SDK","Dexie"], thumb:"assets/Noema%20(1).png",
    shots:["assets/Noema%20(1).png","assets/Noema%20(2).png","assets/Noema%20(3).png"]},
 
-  {name:"RMSez", cat:"QGIS Plugin", status:"Active", effort:4,
+  {name:"RMSez", cat:"QGIS Plugin", status:"Active", effort:4, icons:["assets/icons/rmsez.png"],
    tagline:"Vertical-accuracy QC for LiDAR DEMs (RMSz).",
    bullets:["Computes RMSz against GNSS ground control per ASPRS/USGS standards","Supports raster DEM/DTM and mesh (.2dm) surfaces with barycentric interpolation","Automated z-score outlier detection &amp; exclusion","Color-coded HTML + CSV accuracy reports with project headers"],
    tech:["Python","QGIS","PyQt","NumPy"], report:"assets/RMSz_Report_20260626_141458.html",
    shots:["assets/RMSez(1).png"]},
 
-  {name:"QuadricEdgeCollapse", cat:"QGIS Plugin", status:"Active", effort:8,
+  {name:"QuadricEdgeCollapse", cat:"QGIS Plugin", status:"Active", effort:8, icons:["assets/icons/quadric-edge-collapse.svg"],
    tagline:"Quadric edge-collapse mesh decimation in QGIS.",
    bullets:["Quadric-error mesh decimation inside the QGIS Processing framework","Created to support programs that cannot handle large surfaces — such as Civil 3D — by pre-decimating meshes to a manageable size","2D &amp; 3D (Z) polygon layers — terrain and building models","Four cost metrics: Quadric Error, Edge Length, Angle Deviation, Hybrid","Optional boundary preservation; toolbar + Processing Toolbox"],
    tech:["Python","QGIS","NumPy"], report:"assets/Quadric_EdgeCollapse(5)_OrangeGrove_QEC_R11_report.html",
    shots:["assets/QuadricEdgeCollapse.png","assets/QuadricEdgeCollapse0.png","assets/QuadricEdgeCollapse1.png","assets/QuadricEdgeCollapse4.png"]},
 
-  {name:"Line Interpolator", cat:"QGIS Plugin", status:"Active", effort:4,
+  {name:"Line Interpolator", cat:"QGIS Plugin", status:"Active", effort:4, icons:["assets/icons/line-interpolator.svg"],
    tagline:"Drapes survey elevations onto 2D polylines.",
    bullets:["Linearly interpolates Z onto polyline vertices from PNEZD survey points","Outputs true LineStringZ geometry","GUI dialog + Processing Toolbox algorithm for batch use","US Survey Feet aware; works in Processing models"],
    tech:["Python","QGIS","PyQGIS"], shots:["assets/line-interpolator-profile.svg"]},
 
-  {name:"Breakline Generator", cat:"QGIS Plugin", status:"Beta", effort:4,
+  {name:"Breakline Generator", cat:"QGIS Plugin", status:"Beta", effort:4, icons:["assets/icons/breakline-generator.svg"],
    tagline:"Extracts 3D breaklines from point clouds &amp; DEMs.",
    bullets:["Three modes: dip-angle, geometric-feature (PCA), and TIN ridge/valley extraction","DBSCAN clustering, MST ordering, Douglas-Peucker simplification, Z-draping","Feeds constraints to the Quadric Edge Collapse decimation plugin","Outputs LineStringZ GeoPackage layers"],
    tech:["Python","QGIS","laspy","scikit-learn","GDAL"], shots:[]},
@@ -797,7 +809,7 @@ const PROJECTS = [
    bullets:["Iterated SHA3-512 hashing (configurable rounds) + user salt for dictionary resistance","Substitution tables map hash digits to diverse character sets","Outputs 128–512+ character complex passwords","Bash CLI + Python tkinter GUI"],
    tech:["Bash","Python","tkinter","SHA3-512"], shots:[]},
 
-  {name:"RGB Point Cloud Rasterizer", cat:"QGIS Plugin", status:"Mature", effort:2,
+  {name:"RGB Point Cloud Rasterizer", cat:"QGIS Plugin", status:"Mature", effort:2, icons:["assets/icons/rgb-point-cloud-rasterizer.png"],
    tagline:"LAZ RGB clouds to full-color rasters.",
    bullets:["Converts LAZ point clouds to RGB raster via PDAL exportraster","Portable .model3 files for the QGIS Processing Toolbox","Configurable output resolution","No-code, drag-and-drop graphical workflow"],
    tech:["QGIS","PDAL","LiDAR"], shots:[]},
@@ -993,10 +1005,15 @@ let modalP=null;
 function openModal(p){
   modalP=p;
   modal.style.setProperty('--cat', CAT_COLORS[p.cat] || 'var(--cyan)');
+  const pluginIconsHTML = (p.icons && p.icons.length)
+    ? '<div class="m-plugin-icons">'
+      + p.icons.map(ic=>'<img src="'+ic+'" alt="'+p.name+' icon" loading="lazy"/>').join('')
+      + '</div>'
+    : '';
   modal.innerHTML =
       '<button class="m-close" aria-label="Close">&times;</button>'
     + '<div class="m-eyebrow">'+p.cat+'</div>'
-    + '<h2>'+p.name+'</h2>'
+    + '<div class="m-title-row"><h2>'+p.name+'</h2>'+pluginIconsHTML+'</div>'
     + '<div class="m-tagline">'+p.tagline+'</div>'
     + '<div class="m-meta"><span class="status s-'+p.status+'">'+p.status+'</span>'+effortDots(p.effort)+'</div>'
     + '<ul>'+p.bullets.map(b=>'<li>'+b+'</li>').join('')+'</ul>'

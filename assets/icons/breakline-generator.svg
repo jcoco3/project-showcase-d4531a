@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Terrain triangle (TIN) -->
+  <polygon points="6,52 32,12 58,52" fill="#A1887F" fill-opacity="0.35" stroke="#5D4037" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Inner subdivision lines (faint) -->
+  <line x1="6" y1="52" x2="32" y2="32" stroke="#8D6E63" stroke-width="0.8" stroke-opacity="0.6"/>
+  <line x1="58" y1="52" x2="32" y2="32" stroke="#8D6E63" stroke-width="0.8" stroke-opacity="0.6"/>
+  <line x1="32" y1="12" x2="32" y2="32" stroke="#8D6E63" stroke-width="0.8" stroke-opacity="0.6"/>
+  <line x1="19" y1="32" x2="45" y2="32" stroke="#8D6E63" stroke-width="0.8" stroke-opacity="0.6"/>
+  <!-- Top-of-slope breakline (red, upper ridge curve) -->
+  <path d="M 12 30 Q 22 22 32 24 T 52 30" fill="none" stroke="#D32F2F" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Bottom-of-slope breakline (orange, lower curve) -->
+  <path d="M 10 46 Q 24 38 32 42 T 54 46" fill="none" stroke="#F57C00" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Vertices on the breaklines -->
+  <circle cx="12" cy="30" r="1.6" fill="#B71C1C"/>
+  <circle cx="32" cy="24" r="1.6" fill="#B71C1C"/>
+  <circle cx="52" cy="30" r="1.6" fill="#B71C1C"/>
+  <circle cx="10" cy="46" r="1.6" fill="#E65100"/>
+  <circle cx="32" cy="42" r="1.6" fill="#E65100"/>
+  <circle cx="54" cy="46" r="1.6" fill="#E65100"/>
+</svg>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- New PCM Project: blank document with a plus badge -->
+  <!-- Document body -->
+  <path d="M5 2 L15 2 L19 6 L19 22 L5 22 Z"
+        fill="#D6E8F7" stroke="#1B6CA8" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <!-- Folded corner -->
+  <path d="M15 2 L15 6 L19 6" fill="none"
+        stroke="#1B6CA8" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Plus sign (badge, bottom-right) -->
+  <circle cx="17" cy="18" r="4.5" fill="#1B6CA8"/>
+  <line x1="17" y1="15.5" x2="17" y2="20.5"
+        stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="14.5" y1="18" x2="19.5" y2="18"
+        stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

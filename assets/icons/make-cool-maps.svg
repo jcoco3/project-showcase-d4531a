@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="turbo" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0.00" stop-color="#30123b"/>
+      <stop offset="0.20" stop-color="#4662d8"/>
+      <stop offset="0.45" stop-color="#36c5be"/>
+      <stop offset="0.65" stop-color="#a3fd3d"/>
+      <stop offset="0.85" stop-color="#fabc3a"/>
+      <stop offset="1.00" stop-color="#7a0403"/>
+    </linearGradient>
+    <clipPath id="frame">
+      <rect x="2" y="2" width="60" height="60" rx="10"/>
+    </clipPath>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="10" fill="#101418"/>
+  <g clip-path="url(#frame)">
+    <path d="M2 56 L14 32 L22 40 L32 18 L42 30 L52 22 L62 36 L62 62 L2 62 Z"
+          fill="url(#turbo)"/>
+    <path d="M2 56 L14 32 L22 40 L32 18 L42 30 L52 22 L62 36"
+          fill="none" stroke="#ffffff" stroke-width="1.6"
+          stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+    <circle cx="32" cy="18" r="2.2" fill="#ffffff"/>
+  </g>
+  <rect x="2" y="2" width="60" height="60" rx="10" fill="none"
+        stroke="#2c3138" stroke-width="1.5"/>
+</svg>

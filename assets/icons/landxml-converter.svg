@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- TIN mesh terrain surface: five triangulated facets -->
+  <!-- Back-left slope -->
+  <polygon points="4,58 32,34 4,34" fill="#2E7D32"/>
+  <!-- Back-right slope -->
+  <polygon points="60,58 32,34 60,34" fill="#1B5E20"/>
+  <!-- Front-left face -->
+  <polygon points="4,58 32,34 32,58" fill="#388E3C"/>
+  <!-- Front-right face -->
+  <polygon points="32,58 32,34 60,58" fill="#2E7D32"/>
+  <!-- Upper peak triangle -->
+  <polygon points="4,34 32,8 60,34" fill="#43A047"/>
+  <!-- Highlight facet near peak -->
+  <polygon points="20,34 32,8 44,34" fill="#66BB6A"/>
+</svg>
