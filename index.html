@@ -1229,7 +1229,7 @@ document.addEventListener('keydown',e=>{
 (function(){
   var LS_VIEWED = 'ps_viewed';
   var LS_CELEB  = 'ps_celebrated';
-  var viewedSet = new Set(JSON.parse(localStorage.getItem(LS_VIEWED) || '[]'));
+  var viewedSet = new Set();   // session-only: must view all cards THIS visit to trigger (resets each load)
   var pendingCeleb = false;
   var firedThisSession = false;   // fires once per page load on completion; re-fires after a reload
 
@@ -1238,12 +1238,8 @@ document.addEventListener('keydown',e=>{
   openModal = function(p){
     _origOpen(p);
     var key = p.name;
-    if(!viewedSet.has(key)){
-      viewedSet.add(key);
-      try{ localStorage.setItem(LS_VIEWED, JSON.stringify(Array.from(viewedSet))); }catch(e){}
-    }
-    // Re-check completion on EVERY open (not only new adds), and count only
-    // CURRENT projects so a stale/removed-card entry can't block or skew it.
+    viewedSet.add(key);
+    // Count only CURRENT projects; fire once this session when all are seen.
     var seen = 0;
     for(var pi = 0; pi < PROJECTS.length; pi++){ if(viewedSet.has(PROJECTS[pi].name)) seen++; }
     if(seen >= PROJECTS.length && !firedThisSession){
