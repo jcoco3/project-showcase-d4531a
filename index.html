@@ -653,13 +653,13 @@ const PROJECTS = [
 
   {name:"Tree Locator", cat:"QGIS Plugin", status:"Active", effort:9,
    tagline:"Individual-tree detection &amp; full forestry analytics from LiDAR.",
-   bullets:["Two detection engines: raster CHM local-maxima and treeiso 3D point-cloud segmentation, with consensus matching","Stand inventory: trees/acre, basal area, merchantable volume, carbon/biomass, spatial-pattern statistics","DBH cylinder modeling, fire ladder-fuel risk, canopy ecology, change detection, utility-ROW encroachment","Per-tree 4-view HTML reports, DXF + Leaflet web-map export; 35+ tagged releases (v2.0–v2.35)"],
+   bullets:["Two detection engines: raster CHM local-maxima and treeiso 3D point-cloud segmentation, with consensus matching","Stand inventory: trees/acre, basal area, merchantable volume, carbon/biomass, spatial-pattern statistics","DBH cylinder modeling, fire ladder-fuel risk, canopy ecology, change detection, utility-ROW encroachment","Per-tree 4-view HTML reports, DXF + Leaflet web-map export; 35+ tagged releases (v2.0–v2.35)","Requested by Jeff Diamond for professional-grade forestry inventory and reporting"],
    tech:["Python","QGIS","laspy","PDAL","SciPy","OpenCV","treeiso"],
    shots:["assets/TreeLocator%20(1).png","assets/TreeLocator%20(2).png","assets/TreeLocator%20(3).png","assets/TreeLocator%20(4).png","assets/TreeLocator%20(5).png","assets/TreeLocator%20(6).png","assets/TreeLocator%20(7).png","assets/TreeLocator%20(8).png","assets/TreeLocator%20(13).png","assets/TreeLocator%20(9).jpg","assets/TreeLocator%20(10).jpg","assets/TreeLocator%20(11).jpg"]},
 
   {name:"AndroidSLAM (OctoSLAM)", cat:"Geospatial/LiDAR", status:"WIP", effort:8,
-   tagline:"On-device multi-sensor SLAM for a Galaxy S24 Ultra.",
-   bullets:["Fuses LiDAR, IMU, GNSS &amp; cameras through swappable C++ backends (FAST-LIO2, ORB-SLAM3, GLIM+GTSAM)","Kotlin/Compose UI over a JNI bridge to native libslam_core; pluggable LIO / VIO / LVI / GNSS modes","External RealSense D455 depth + u-blox F9P RTK GNSS over USB-CDC","MapLibre map overlay + live 2D viz; 4,700+ source files, full NDK/CMake build"],
+   tagline:"On-device multi-sensor SLAM for an Android device.",
+   bullets:["Fuses external depth, IMU, GNSS &amp; cameras through swappable C++ backends (FAST-LIO2, ORB-SLAM3, GLIM+GTSAM)","Kotlin/Compose UI over a JNI bridge to native libslam_core; pluggable LIO / VIO / LVI / GNSS modes","External RealSense D455 depth camera + u-blox F9P RTK GNSS over USB-CDC — no built-in LiDAR","MapLibre map overlay + live 2D viz; 4,700+ source files, full NDK/CMake build"],
    tech:["Kotlin","Compose","C++17","NDK","FAST-LIO2","MapLibre"],
    shots:["assets/OctoSLAM%20(1).jpg","assets/OctoSLAM%20(2).jpg","assets/OctoSLAM%20(3).jpg","assets/OctoSLAM%20(4).jpg","assets/OctoSLAM%20(5).jpg","assets/OctoSLAM%20(6).jpg"]},
 
@@ -677,7 +677,7 @@ const PROJECTS = [
 
   {name:"Segment Adjust", cat:"QGIS Plugin", status:"Active", effort:8,
    tagline:"Per-segment vertical adjustment of LiDAR surfaces.",
-   bullets:["Segments a surface by user polygons and solves an optimal vertical shift per segment from GNSS control","Interactive polygon digitizing with snapping + topology validation (gap/overlap detection)","Mean / median / custom shift methods, edge feathering, before/after accuracy tracking","Guided wizard UI with HTML/CSV reporting; integrates with RMSez"],
+   bullets:["Segments a surface by user polygons and solves an optimal vertical shift per segment from GNSS control","Interactive polygon digitizing with snapping + topology validation (gap/overlap detection)","Mean / median / custom shift methods, edge feathering, before/after accuracy tracking","Automatic segmentation routines: watershed/drainage, RGB-based, and geomorphological segmentation","Guided wizard UI with HTML/CSV reporting; integrates with RMSez"],
    tech:["Python","QGIS","GDAL","RMSez"],
    shots:["assets/Segment_Adjust.png","assets/Segment_Adjust1.png","assets/Segment_Adjust4.png","assets/Segment_Adjust%20(2).png"]},
 
@@ -717,7 +717,7 @@ const PROJECTS = [
   {name:"LandXML Converter", cat:"QGIS Plugin", status:"Active", effort:3,
    tagline:"Imports LandXML surfaces &amp; alignments, with extra exports.",
    bullets:["Heavily modified from an existing converter with added export formats","Brings LandXML TIN surfaces and alignments into QGIS","Small, single-purpose utility for survey/CAD interchange"],
-   tech:["Python","QGIS","LandXML"], shots:[]},
+   tech:["Python","QGIS","LandXML"], shots:["assets/landxml-tin.svg"]},
 
   {name:"3D Toolset", cat:"QGIS Plugin", status:"WIP", effort:6,
    tagline:"CAD-style 3D modeling &amp; point-cloud editing inside QGIS.",
@@ -732,8 +732,8 @@ const PROJECTS = [
    shots:["assets/SonarPi%20(0).jpg","assets/SonarPi%20(2).jpg","assets/SonarPi%20(3).jpg","assets/SonarPi%20(4).jpg","assets/SonarPi%20(5).jpg","assets/SonarPi%20(6).jpg","assets/SonarPi%20(7).jpg","assets/SonarPi.jpg","assets/SonarPi.png","assets/SonarPi2.png"]},
 
   {name:"3D Elevation Profile Digitizer", cat:"QGIS Plugin", status:"Active", effort:5,
-   tagline:"Interactive 3D digitizing in the QGIS profile panel.",
-   bullets:["Adds point &amp; line digitizing to the elevation-profile canvas with full Z preservation","Snaps to point-cloud vertices, raster elevations and other layers","Exports PointZ / LineStringZ to GeoPackage or Shapefile","X-ray profile rendering and horizontal cross-sections; 109 commits"],
+   tagline:"Build surfaces by section along a profile — manually or with auto terrain-following.",
+   bullets:["Model by Section: build a TIN surface by drawing cross-sections — manually positioned or automatically following the terrain per section","Auto-generate the entire surface along the profile in one pass, placing sections end-to-end","2D and 3D layout outputs for the generated surface","Multiple point-visualization style buttons for profile display; X-ray profile rendering; exports PointZ / LineStringZ; 109 commits"],
    tech:["Python","QGIS","PyQGIS","GeoPackage"],
    shots:["assets/ModelBySection.mp4","assets/ModelbySection.png","assets/ModelbySection1.png"]},
 
@@ -747,7 +747,7 @@ const PROJECTS = [
    tagline:"DJI RTK drone data to survey-grade coordinates.",
    bullets:["Parses DJI M300/P1 MRK timestamp files and XMP photo tags into RTK points","Clusters and averages redundant fixes per ground point for survey accuracy","Exports PNEZD CSV + permanent GeoPackage layers","CRS validation gate and background QgsTask pipeline; 70 commits"],
    tech:["Python","QGIS","PyQt5","GeoPackage"],
-   shots:["assets/Drone_GNSS_Extractor%20(1).png","assets/Drone_GNSS_Extractor%20(4).png","assets/Drone_GNSS_Extractor%20(5).png"]},
+   shots:["assets/Drone_GNSS_Extractor%20(1).png","assets/Drone_GNSS_Extractor%20(4).png","assets/Drone_GNSS_Extractor%20(5).png","assets/Drone_GNSS_Extractor%20(6).jpg"]},
 
   {name:"Noēma", cat:"Voice/AI", status:"Beta", effort:2,
    tagline:"AI-driven “rabbit hole” feed of wisdom quotes.",
@@ -763,14 +763,14 @@ const PROJECTS = [
 
   {name:"QuadricEdgeCollapse", cat:"QGIS Plugin", status:"Active", effort:8,
    tagline:"Quadric edge-collapse mesh decimation in QGIS.",
-   bullets:["Quadric-error mesh decimation inside the QGIS Processing framework","2D &amp; 3D (Z) polygon layers — terrain and building models","Four cost metrics: Quadric Error, Edge Length, Angle Deviation, Hybrid","Optional boundary preservation; toolbar + Processing Toolbox"],
+   bullets:["Quadric-error mesh decimation inside the QGIS Processing framework","Created to support programs that cannot handle large surfaces — such as Civil 3D — by pre-decimating meshes to a manageable size","2D &amp; 3D (Z) polygon layers — terrain and building models","Four cost metrics: Quadric Error, Edge Length, Angle Deviation, Hybrid","Optional boundary preservation; toolbar + Processing Toolbox"],
    tech:["Python","QGIS","NumPy"], report:"assets/Quadric_EdgeCollapse(5)_OrangeGrove_QEC_R11_report.html",
    shots:["assets/QuadricEdgeCollapse.png","assets/QuadricEdgeCollapse0.png","assets/QuadricEdgeCollapse1.png","assets/QuadricEdgeCollapse4.png"]},
 
   {name:"Line Interpolator", cat:"QGIS Plugin", status:"Active", effort:4,
    tagline:"Drapes survey elevations onto 2D polylines.",
    bullets:["Linearly interpolates Z onto polyline vertices from PNEZD survey points","Outputs true LineStringZ geometry","GUI dialog + Processing Toolbox algorithm for batch use","US Survey Feet aware; works in Processing models"],
-   tech:["Python","QGIS","PyQGIS"], shots:[]},
+   tech:["Python","QGIS","PyQGIS"], shots:["assets/line-interpolator-profile.svg"]},
 
   {name:"Breakline Generator", cat:"QGIS Plugin", status:"Beta", effort:4,
    tagline:"Extracts 3D breaklines from point clouds &amp; DEMs.",
@@ -807,10 +807,6 @@ const PROJECTS = [
    bullets:["Loads the NOAA GEOID18 geoid model for undulation across the contiguous US","Hillshade-rendered geoid surface maps","NGS GPS-on-benchmark data to validate the model","State Plane zone reference layers in multiple formats"],
    tech:["QGIS","GeoTIFF","NOAA GEOID18"], shots:["assets/geoid18-1.png"]},
 
-  {name:"Ghostscript PDFCompress", cat:"Utility", status:"Mature", effort:1,
-   tagline:"Drag-and-drop PDF compression.",
-   bullets:["Drop PDFs onto a batch file to compress them via Ghostscript","Uses the pdfwrite /ebook quality preset","Outputs a separate _compressed.pdf and reports size reduction","Skips non-PDF inputs gracefully"],
-   tech:["PowerShell","Ghostscript","Batch"], shots:[]},
 ];
 
 // slug → mp3 filename mapping (assets/audio/<slug>.mp3)
@@ -845,7 +841,6 @@ const AUDIO_SLUGS = {
   "duhcrypt":                      "duhcrypt",
   "RGB Point Cloud Rasterizer":    "rgb-point-cloud-rasterizer",
   "GEOID18":                       "geoid18",
-  "Ghostscript PDFCompress":       "ghostscript-pdf-compress",
 };
 
 const catClass = c => c==="Drone"?"cat-drone":c==="Voice/AI"?"cat-voiceai":c==="Utility"?"cat-utility":"";
