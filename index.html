@@ -386,10 +386,14 @@
   /* Mobile: shrink the celebration box so the light-cycle arena has room to run
      around it (the modal is a wall; markWalls recomputes to this smaller size). */
   @media(max-width:620px){
-    .celeb-modal{max-width:86vw;padding:26px 22px 28px;border-radius:18px}
-    .celeb-icon{font-size:46px;margin-bottom:12px}
-    .celeb-modal h2{font-size:clamp(20px,7vw,28px)}
-    .celeb-modal .celeb-body{font-size:12px;max-width:300px;margin-bottom:18px}
+    .celeb-backdrop{padding:16px 10px}
+    .celeb-modal{max-width:250px;padding:16px 16px 18px;border-radius:14px}
+    .celeb-modal .m-close{width:26px;height:26px;font-size:15px;top:8px;right:9px}
+    .celeb-icon{font-size:30px;margin-bottom:7px}
+    .celeb-modal h2{font-size:clamp(15px,5vw,19px);margin-bottom:5px}
+    .celeb-modal .celeb-body{font-size:10px;line-height:1.45;max-width:200px;margin:0 auto 12px}
+    .celeb-modal .report-link{font-size:11px;padding:5px 12px;margin-top:8px}
+    .celeb-credit{font-size:9px;margin-top:6px}
   }
 
   /* ---- TRON light-cycle canvas (celebration backdrop, sits at z-index:0 behind modal) ---- */
