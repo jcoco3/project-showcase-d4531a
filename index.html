@@ -1371,6 +1371,7 @@ document.addEventListener('keydown',e=>{
   var TRAIL_MAX = 90;     // max trail cells per cycle before oldest is erased
   var TICK_MS = [82, 97, 71]; // per-cycle base step interval (ms) — slightly different speeds
   var speedScale = 1;         // <1 on small screens → larger effective tick → slower cycles
+  var mScale = 1;             // 0.5 on phones → half-size head dots + half-length trails
   var RECKLESS = 0.11;    // per-tick chance an AI cycle plows straight into danger instead of avoiding
   var PLAYER_IDX = 0;     // cyan cycle is the one the user takes over
 
@@ -1563,7 +1564,7 @@ document.addEventListener('keydown',e=>{
 
     // Trim oldest trail cell when cap exceeded. Scale the cap with speedScale
     // (same rule as cycle speed) so trails aren't huge relative to a small arena.
-    var trailCap = Math.max(18, Math.round(TRAIL_MAX * speedScale));
+    var trailCap = Math.max(10, Math.round(TRAIL_MAX * speedScale * mScale));
     if(c.trail.length > trailCap){
       var old = c.trail.shift();
       var ok = gk(old.x, old.y);
@@ -1608,9 +1609,9 @@ document.addEventListener('keydown',e=>{
         var hx = (c.x + 0.5) * CELL, hy = (c.y + 0.5) * CELL;
         // soft glow halo — same for every cycle (player not distinguished)
         ctx.fillStyle = 'rgba('+cs+',0.22)';
-        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.45, 0, 6.283); ctx.fill();
+        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.45 * mScale, 0, 6.283); ctx.fill();
         ctx.fillStyle = 'rgba('+cs+',1)';        // crisp core dot
-        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.28, 0, 6.283); ctx.fill();
+        ctx.beginPath(); ctx.arc(hx, hy, CELL * 0.28 * mScale, 0, 6.283); ctx.fill();
       }
     }
 
@@ -1850,6 +1851,7 @@ document.addEventListener('keydown',e=>{
     // Scale traversal pace by the smaller viewport dimension so phones aren't frantic.
     var minDim = Math.min(window.innerWidth || w, window.innerHeight || h);
     speedScale = Math.max(0.45, Math.min(1, minDim / 900));
+    mScale = (minDim < 620) ? 0.5 : 1;   // phones: half dot size + half trail length
     markWalls();   // modal box → permanent wall cells
   }
 
