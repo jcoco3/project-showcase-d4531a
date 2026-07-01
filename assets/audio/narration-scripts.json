@@ -25,6 +25,7 @@
       "read only": "reed only",
       "reliably": "re-lie-a-blee",
       "reliable": "re-lie-a-bull",
+      "curate": "cure-ate (applied to the wiki card only)",
       "Let's": "Let us",
       "It's": "It is",
       "it's": "it is",
@@ -53,7 +54,7 @@
       "USB": "U S B",
       "RTK": "R T K",
       "DJI": "D J I",
-      "FAA": "F Ay Ay",
+      "FAA": "F A A",
       "ASPRS": "Ay S P R S",
       "USGS": "U S G S",
       "TBC": "T B C",
@@ -68,7 +69,7 @@
       "UI": "U I",
       "CT": "C T",
       "AI": "A I",
-      "orb": "ohrb",
+      "orb": "or-buh",
       "Pi": "Pie"
     }
   },
@@ -78,11 +79,11 @@
   },
   "voice-control-setup": {
     "display": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local GPU, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background AI sub-agents, and an animated visualizer orb.",
-    "tts": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local G P U, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background A I sub-agents, and an animated vizh-oo-a-ly-zer ohrb."
+    "tts": "This is the system you might be listening through right now — a completely local, hands-free voice interface wired into Claude Code. It runs speech recognition and text-to-speech on a local G P U, routes audio through a LiveKit browser tab so no headset is needed, and ships with over ten optional features including wake-word activation, background A I sub-agents, and an animated vizh-oo-a-ly-zer or-buh."
   },
   "knowledge-llm-wiki": {
     "display": "An AI agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-curate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the AI reads from and writes back to automatically across every project it works in. Thank you, Donovan.",
-    "tts": "An A I agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-curate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the A I reads from and writes back to automatically across every project it works in. Thank you, Donovan."
+    "tts": "An A I agent is only as good as what it remembers across projects. This is a self-maintaining knowledge wiki inspired by Karpathy's append-and-cure-ate pattern — a version-controlled collection of lessons, conventions, and reusable patterns that the A I reads from and writes back to automatically across every project it works in. Thank you, Donovan."
   },
   "tree-locator": {
     "display": "Tree Locator, requested by Jeff Diamond, is a QGIS plugin that detects and inventories individual trees from LiDAR point clouds. It runs two detection engines — a raster-based approach and a full 3D point-cloud segmentation — then synthesizes a complete forestry report: trees per acre, basal area, merchantable volume, carbon estimates, fire risk, and canopy analysis. The primary goal is locating the large, beautiful keeper-trees for preliminary planning, while the secondary function works out wood volume between ground elevation and base flood elevation for refined mitigation volumes. Thirty-five tagged releases deep.",
@@ -105,8 +106,8 @@
     "tts": "Surveyed surfaces often have systematic vertical errors that vary by area. Segment Adjust lets you draw polygons over problem zones, feed in G P S control points, and it solves the optimal vertical shift per segment to bring the surface into spec. It also offers automatic segmentation routines — watershed and drainage, R G B color, and geomorphological — so you do not have to outline every zone by hand. Edge feathering blends segments cleanly, and it outputs accuracy reports compatible with R M S E Z."
   },
   "drone-pilot-airspace-command": {
-    "display": "DPAC — DronePilotAirspaceCommand — is a real-time situational-awareness app for drone pilots: mission control you run on your phone before and during a flight. It maps FAA airspace classes, restricted zones, and nearby live aircraft, adds weather and radar overlays, and gives you a clear go or no-go indicator based on everything it sees.",
-    "tts": "Dee-pack — the Drone Pilot Airspace Command — is a real-time situational-awareness app for drone pilots: mission control you run on your phone before and during a flight. It maps F Ay Ay airspace classes, restricted zones, and nearby live aircraft, adds weather and radar overlays, and gives you a clear go or no-go indicator based on everything it sees."
+    "display": "DPAC — DronePilotAirspaceCommand — is a real-time situational-awareness app for drone pilots: mission control you run on your phone before and during a flight. It maps FAA airspace classes, restricted zones, and nearby live aircraft, adds weather and radar overlays, and gives you a clear go or no-go indicator based on everything it sees. It also lets you set your own alarms that warn you when aircraft enter your defined warning zones or match your altitude.",
+    "tts": "Dee-pack — the Drone Pilot Airspace Command — is a real-time situational-awareness app for drone pilots: mission control you run on your phone before and during a flight. It maps F A A airspace classes, restricted zones, and nearby live aircraft, adds weather and radar overlays, and gives you a clear go or no-go indicator based on everything it sees. It also lets you set your own alarms that warn you when aircraft enter your defined warning zones or match your altitude."
   },
   "lidarmill-uploader": {
     "display": "After a LiDAR scanning mission, you need to get data off the scanner and into the cloud. This Android app finds a Recon-XT scanner over Wi-Fi, lists its missions, and handles chunked resumable uploads to the LidarMill processing API — so even a large mission on a spotty field connection gets there reliably.",
@@ -117,8 +118,8 @@
     "tts": "Think of this as a structural BIM tool that lives inside Q G I S and works directly against your point cloud. You place parametric beams and pipes, fit them to the actual scanned geometry, and export to I F C for use in any BIM workflow. It includes the full Ay I S C pipe catalog and a 3D mesh renderer inside Q G I S."
   },
   "pdal-gui": {
-    "display": "PDAL is a powerful point-cloud processing library, but it's command-line only. This plugin wraps it in a full Qt GUI inside QGIS — classification, tiling, format conversion, clipping, voxel downsampling — with a map-click coordinate picker and async task management so heavy jobs don't freeze the interface.",
-    "tts": "Pee-Dal is a powerful point-cloud processing library, but it is command-line only. This plugin wraps it in a full Q T gooey inside Q G I S — classification, tiling, format conversion, clipping, voxel downsampling — with a map-click coordinate picker and async task management so heavy jobs do not freeze the interface."
+    "display": "PDAL is a powerful point-cloud processing library, but it's command-line only. This plugin wraps it in a full Qt GUI inside QGIS — classification, tiling, format conversion, clipping, voxel downsampling — with a map-click coordinate picker that makes base-point translations and transforms easy, plus async task management so heavy jobs don't freeze the interface.",
+    "tts": "Pee-Dal is a powerful point-cloud processing library, but it is command-line only. This plugin wraps it in a full Q T gooey inside Q G I S — classification, tiling, format conversion, clipping, voxel downsampling — with a map-click coordinate picker that makes base-point translations and transforms easy, plus async task management so heavy jobs do not freeze the interface."
   },
   "make-cool-maps": {
     "display": "One-click professional cartographic styling for terrain data. Point it at a LiDAR file or a raster DEM, pick from nine built-in styles — Fancy DTM, Layer Cake, Tanaka contours, X-Ray LRM — and it renders immediately with tunable parameters. No cartography expertise required.",
@@ -154,7 +155,7 @@
   },
   "noema": {
     "display": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold AI-generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It's an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him.",
-    "tts": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold A I-generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It is an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him."
+    "tts": "A quote app that goes deep rather than just scrolling. You start with a curated quote, tap to unfold A I generated context — biographical background, historical setting, modern resonance — and each layer branches three ways so you can follow whichever thread interests you. It is an exploration tool for ideas, not just a collection. The idea came from Bryan Lewis — we just had fun building it together with him."
   },
   "rmsez": {
     "display": "RMSez automates the vertical-accuracy quality check required for LiDAR deliverables. It computes RMSz against GPS ground control following ASPRS and USGS standards, handles both raster DEMs and mesh surfaces, detects outliers automatically, and produces a formatted HTML report you can drop straight into a project deliverable. And be sure to check out the full report for a deeper dive.",
@@ -165,8 +166,8 @@
     "tts": "Mesh decimation — simplifying a complex mesh while preserving its shape — is standard in 3D modeling but missing from Q G I S. This plugin brings quadric-error mesh simplification into the Q G I S Processing framework, supporting both terrain models and building footprints with four cost metrics and optional boundary preservation. It was created to help support programs that cannot handle larger surfaces, such as Civil 3D. There is a full report attached as well, if you would like to see the results in detail."
   },
   "line-interpolator": {
-    "display": "A small but often-needed tool for survey workflows: take a 2D polyline and drape elevation onto its vertices from a set of surveyed points. The output is a true three-dimensional line that can feed into surface modeling or profile analysis without any manual elevation lookup.",
-    "tts": "A small but often-needed tool for survey workflows: take a 2D polyline and drape elevation onto its vertices from a set of surveyed points. The output is a true three-dimensional line that can feed into surface modeling or profile analysis without any manual elevation lookup."
+    "display": "A small but often-needed tool for survey workflows: take a 2D polyline and drape elevation onto its vertices from a set of surveyed points. The output is a true three-dimensional line that can feed into surface modeling or profile analysis without any manual elevation lookup. You can run it in strict mode, which forces the line through every surveyed elevation exactly, or in a generalized mode that interpolates smoothly across the existing vertices without adding new ones.",
+    "tts": "A small but often-needed tool for survey workflows: take a 2D polyline and drape elevation onto its vertices from a set of surveyed points. The output is a true three-dimensional line that can feed into surface modeling or profile analysis without any manual elevation lookup. You can run it in strict mode, which forces the line through every surveyed elevation exactly, or in a generalized mode that interpolates smoothly across the existing vertices without adding new ones."
   },
   "breakline-generator": {
     "display": "LiDAR-derived surfaces need breaklines — the sharp edges along ridges, channels, and walls — to triangulate correctly. This plugin extracts those breaklines automatically from the point cloud using three detection modes, then simplifies and orders them for use as constraints in surface modeling.",
@@ -189,8 +190,8 @@
     "tts": "A password generator with a different approach: instead of giving you a random string, it takes a memorable phrase you choose, applies iterated hashing with a personal salt, and maps the result to a diverse character set. The output is long, complex, and reproducible — you can regenerate the same strong password from the same phrase anytime. Eric Dustin is the ideator and core programmer behind it — we just whipped up a gooey for it, for fun."
   },
   "rgb-point-cloud-rasterizer": {
-    "display": "The simplest possible bridge between LiDAR and raster GIS: drop in a LAZ file with RGB color data, and get a georeferenced raster out. Packaged as a QGIS Processing model so it works drag-and-drop in the Processing Toolbox with no scripting needed.",
-    "tts": "The simplest possible bridge between Lie-dar and raster G I S: drop in a L Ay Z file with R G B color data, and get a georeferenced raster out. Packaged as a Q G I S Processing model so it works drag-and-drop in the Processing Toolbox with no scripting needed."
+    "display": "The simplest possible bridge between LiDAR and raster GIS: drop in a LAZ file with RGB color data, and get a georeferenced raster out. Packaged as a QGIS Processing model so it works drag-and-drop in the Processing Toolbox with no scripting needed. It was an early predecessor of the LiDAR Orthophoto Generator plugin — the first simple step toward building true-color orthophotos straight from point clouds.",
+    "tts": "The simplest possible bridge between Lie-dar and raster G I S: drop in a L Ay Z file with R G B color data, and get a georeferenced raster out. Packaged as a Q G I S Processing model so it works drag-and-drop in the Processing Toolbox with no scripting needed. It was an early predecessor of the Lie-dar Orthophoto Generator plugin — the first simple step toward building true-color orthophotos straight from point clouds."
   },
   "geoid18": {
     "display": "A QGIS workspace for exploring the NOAA GEOID18 geoid model — the surface that converts between GPS heights and real-world elevations above sea level. It includes hillshade rendering of the geoid surface, GPS-on-benchmark validation data, and State Plane reference layers for checking vertical datum corrections.",

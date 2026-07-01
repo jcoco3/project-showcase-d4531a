@@ -695,7 +695,7 @@ const PROJECTS = [
 
   {name:"DronePilotAirspaceCommand (DPAC)", cat:"Drone", status:"Beta", effort:7,
    tagline:"Real-time situational-awareness dashboard for drone pilots.",
-   bullets:["FAA airspace classes (B/C/D, NFZ, LAANC) on an interactive MapLibre map with color-coded threat zones","Live nearby-aircraft tracking via OpenSky with proximity alerts","Weather + RainViewer precipitation radar, wind/anemometer widgets, go/no-go indicator","Audio alerts and background GPS; 124 commits — crash fix for GPS-triggered threat-engine loop"],
+   bullets:["FAA airspace classes (B/C/D, NFZ, LAANC) on an interactive MapLibre map with color-coded threat zones","Live nearby-aircraft tracking via OpenSky with user-defined alarms for aircraft entering your warning zones or matching your altitude","Weather + RainViewer precipitation radar, wind/anemometer widgets, go/no-go indicator","Audio alerts and background GPS; 124 commits — crash fix for GPS-triggered threat-engine loop"],
    tech:["React Native","Expo","TypeScript","MapLibre","OpenSky"],
    shots:["assets/DronePilotAirspaceCommand%20(1).jpg","assets/DronePilotAirspaceCommand%20(2).jpg","assets/DronePilotAirspaceCommand%20(3).jpg","assets/DronePilotAirspaceCommand%20(4).jpg","assets/DronePilotAirspaceCommand%20(5).jpg"]},
 
@@ -708,11 +708,11 @@ const PROJECTS = [
   {name:"Point Cloud Modeler", cat:"QGIS Plugin", status:"WIP", effort:6, icons:["assets/icons/point-cloud-modeler.svg"],
    tagline:"Parametric steel &amp; piping modeling against point clouds.",
    bullets:["Places parametric structural members (beams, pipes) against LAS/LAZ/COPC/EPT clouds in QGIS","'Fit to Cloud' as-built fitting: axis-fit steel members and circle-fit pipes to the point cross-section, with elevation snap on placement","Exports to IFC (open BIM) via IfcOpenShell; AISC pipe catalog + QGIS-4 mesh 3D renderer and 2D pipe/plate views","Layered architecture: geometry kernel, catalog, rendering, persistence; 145 commits"],
-   tech:["Python","QGIS","IfcOpenShell","OpenCASCADE"], shots:[]},
+   tech:["Python","QGIS","IfcOpenShell","OpenCASCADE"], shots:["assets/point-cloud-modeler-sections.svg"]},
 
   {name:"PDAL GUI", cat:"QGIS Plugin", status:"Active", effort:6, icons:["assets/icons/pdal-gui.png"],
    tagline:"Point-cloud processing pipelines without the command line.",
-   bullets:["Qt dialogs wrap PDAL: classification, tiling, conversion, above-ground clipping, Grid Snap voxel downsample","Auto-detects the PDAL executable, parses metadata, reports CRS/units","Pipeline presets, template management, map-click coordinate picker","Runs async via the QGIS task manager with progress; 92 commits"],
+   bullets:["Qt dialogs wrap PDAL: classification, tiling, conversion, above-ground clipping, Grid Snap voxel downsample","Auto-detects the PDAL executable, parses metadata, reports CRS/units","Pipeline presets, template management, map-click coordinate picker for easy base-point translations &amp; transforms","Runs async via the QGIS task manager with progress; 92 commits"],
    tech:["Python","PyQt","QGIS","PDAL"],
    shots:["assets/PDAL_GUI1.png","assets/PDAL_GUI2.png","assets/PDAL_GUI3.png","assets/PDAL_GUI4.png"]},
 
@@ -781,7 +781,7 @@ const PROJECTS = [
 
   {name:"Line Interpolator", cat:"QGIS Plugin", status:"Active", effort:4, icons:["assets/icons/line-interpolator.svg"],
    tagline:"Drapes survey elevations onto 2D polylines.",
-   bullets:["Linearly interpolates Z onto polyline vertices from PNEZD survey points","Outputs true LineStringZ geometry","GUI dialog + Processing Toolbox algorithm for batch use","US Survey Feet aware; works in Processing models"],
+   bullets:["Linearly interpolates Z onto polyline vertices from PNEZD survey points","Strict mode inserts a vertex at every survey point so the line passes through each elevation exactly; generalized mode interpolates across existing vertices only","Outputs true LineStringZ geometry","GUI dialog + Processing Toolbox algorithm for batch use","US Survey Feet aware; works in Processing models"],
    tech:["Python","QGIS","PyQGIS"], shots:["assets/line-interpolator-profile.svg"]},
 
   {name:"Breakline Generator", cat:"QGIS Plugin", status:"Beta", effort:4, icons:["assets/icons/breakline-generator.svg"],
@@ -802,16 +802,16 @@ const PROJECTS = [
   {name:"I-Frame Extractor UI", cat:"Utility", status:"Beta", effort:3,
    tagline:"Web UI + FFmpeg backend for keyframe extraction.",
    bullets:["HTML frontend builds a JSON config for extraction settings","Python/FFmpeg backend batch-processes H.264/H.265 video","Four modes: all I-frames, by interval, by count, keyframes only","JPEG/PNG/BMP output with quality &amp; resize control"],
-   tech:["Python","FFmpeg","HTML/JS","Flask"], shots:[]},
+   tech:["Python","FFmpeg","HTML/JS","Flask"], shots:["assets/iframe-extractor-ui.png"]},
 
   {name:"duhcrypt", cat:"Utility", status:"Beta", effort:3,
    tagline:"Turns a memorable phrase into a strong password.",
    bullets:["Iterated SHA3-512 hashing (configurable rounds) + user salt for dictionary resistance","Substitution tables map hash digits to diverse character sets","Outputs 128–512+ character complex passwords","Bash CLI + Python tkinter GUI"],
-   tech:["Bash","Python","tkinter","SHA3-512"], shots:[]},
+   tech:["Bash","Python","tkinter","SHA3-512"], shots:["assets/duhcrypt-ui.png"]},
 
   {name:"RGB Point Cloud Rasterizer", cat:"QGIS Plugin", status:"Mature", effort:2, icons:["assets/icons/rgb-point-cloud-rasterizer.png"],
    tagline:"LAZ RGB clouds to full-color rasters.",
-   bullets:["Converts LAZ point clouds to RGB raster via PDAL exportraster","Portable .model3 files for the QGIS Processing Toolbox","Configurable output resolution","No-code, drag-and-drop graphical workflow"],
+   bullets:["Converts LAZ point clouds to RGB raster via PDAL exportraster","Early predecessor of the LiDAR Orthophoto Generator — the first step toward true-color orthophotos from point clouds","Portable .model3 files for the QGIS Processing Toolbox","Configurable output resolution","No-code, drag-and-drop graphical workflow"],
    tech:["QGIS","PDAL","LiDAR"], shots:[]},
 
   {name:"GEOID18", cat:"Geospatial/LiDAR", status:"WIP", effort:2,
@@ -1721,6 +1721,7 @@ document.addEventListener('keydown',e=>{
     if(!box){ paused = false; return; }
     box.innerHTML =
       '<div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#3ff0ff;opacity:.85;margin-bottom:14px">10 Wins</div>' +
+      '<img src="assets/tron.jpg" alt="Tron" style="display:block;margin:0 auto 14px;height:150px;max-height:32vh;width:auto;border-radius:12px;border:1px solid rgba(63,240,255,.55);box-shadow:0 0 24px rgba(63,240,255,.4)">' +
       '<p style="font-size:18px;line-height:1.5;color:#fff;margin-bottom:6px;font-style:italic">&ldquo;Tron: I fight for the Users.&rdquo;</p>' +
       '<p style="font-size:12.5px;color:#8aa0b0;margin:14px auto 18px;max-width:340px">Leave your details and we&rsquo;ll be in touch.</p>';
     var form = document.createElement('div');
@@ -1790,6 +1791,7 @@ document.addEventListener('keydown',e=>{
     if(!box){ paused = false; return; }
     box.innerHTML =
       '<div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#ff8a3c;opacity:.9;margin-bottom:14px">10 Losses</div>' +
+      '<img src="assets/clu.jpg" alt="Clu" style="display:block;margin:0 auto 14px;height:150px;max-height:32vh;width:auto;border-radius:12px;border:1px solid rgba(255,138,60,.55);box-shadow:0 0 24px rgba(255,138,60,.4)">' +
       '<p style="font-size:16px;line-height:1.55;color:#fff;margin-bottom:22px;font-style:italic">&ldquo;Clu: I took this system to its maximum potential. I created the perfect system!&rdquo;</p>';
     var btn = document.createElement('button');
     btn.textContent = 'Reset & Try Again';
