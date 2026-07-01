@@ -1322,6 +1322,15 @@ document.addEventListener('keydown',e=>{
       e.preventDefault();
       if(!celebBackdrop.classList.contains('open')) openCelebration(true);
     }
+    // Secret preview hotkeys: Ctrl+Alt+1 = Tron "10 Wins" card, Ctrl+Alt+2 = Clu "10 Losses" card.
+    // Opens the celebration if needed, then pops the milestone card (no score change).
+    if(e.ctrlKey && e.altKey && (e.key === '1' || e.key === '2')){
+      e.preventDefault();
+      var wasOpen = celebBackdrop.classList.contains('open');
+      if(!wasOpen) openCelebration(true);
+      var fn = (e.key === '1') ? 'previewWinner' : 'previewLoser';
+      setTimeout(function(){ if(window.__celebTron && window.__celebTron[fn]) window.__celebTron[fn](); }, wasOpen ? 0 : 260);
+    }
   });
 
   // Discreet long-press on the footer = mobile equivalent of Ctrl+Alt+W:
@@ -1939,7 +1948,9 @@ document.addEventListener('keydown',e=>{
     }
   }
 
-  window.__celebTron = {start:start, stop:stop};
+  window.__celebTron = {start:start, stop:stop,
+    previewWinner:function(){ showWinner(); },
+    previewLoser:function(){ showLoser(); }};
 })();
 
 /* ---- Feature 2: Feedback survey ---- */
